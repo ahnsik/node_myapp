@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="kr" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="user-scalable=no, width=device-width" />
+    <link rel="stylesheet" type="text/css" href="carstyle.css" />
+    <title>차계부 - 기록 목록</title>
+    <style type="text/css">
+      * {
+        margin: 0;
+        font-size: 12px;
+      }
+      table {
+        border-collapse: collapse;
+      }
+    </style>
+  </head>
+  <body>
+      <H3>최근 입력된 데이터 기록을 보여줌.</H3>
+
+      <table border='1px'>
+          <!-- <colgroup>
+              <col width='60'><col width='80'><col width='200'><col width='100'>
+          </colgroup> -->
+          <thead>
+              <tr>
+                  <th>날짜</th>
+                  <th>누적주행거리</th>
+                  <th>주유/정비내역</th>
+                  <th>금액</th>
+                  <th>실제주행거리</th>
+                  <th>연비(1천원)</th>
+                  <th>연비(리터당)</th>
+                  <th>단가(1리터당)</th>
+              </tr>
+          </thead>
+          <tbody>
+              <% for(i = 0; i < list.length; i++) { %>
+               <tr>
+                <td><%=list[i].wrdate %></td>
+                <td><%=list[i].distance %> km</td>
+                <td><%=list[i].memo %></td>
+                <td><%=list[i].price %> 원</td>
+                <% if (i < (list.length-1) ) { %>
+                  <td><%=list[i].distance-list[i+1].distance %> km</td>
+                  <td><%=parseInt( ((list[i].distance-list[i+1].distance)*100000 )/(list[i].price)) / 100.0 %> km/천원</td>
+                  <td><%=parseInt( ((list[i].distance-list[i+1].distance)*100)/(list[i].lpg+list[i].gasoline) ) / 100.0 %> km/ℓ</td>
+                  <td><%=parseInt( list[i].price / (list[i].lpg+list[i].gasoline) ) %> 원/ℓ</td>
+                <% } %>
+              </tr>
+              <% } %>
+          </tbody>
+      </table boader='1'>
+
+      <!-- <script type="text/javascript"> -->
+      <%
+        function  DateFormat(d) {
+          return  d.getFullYear()+"-"+(d.getMonth()+1)+"-"+d.getDate();
+        } %>
+      <!-- </script> -->
+  </body>
+</html>

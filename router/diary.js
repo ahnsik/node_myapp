@@ -13,7 +13,6 @@ db.connect( function(err) {
 });
 
 
-
 // // middleware that is specific to this router
 // router.use(function timeLog(req, res, next) {
 //   console.log('Time: ', Date.now());
@@ -33,7 +32,7 @@ router.get('/test', function(req, res) {
   var date = new Date();
   let start_date = new Date(date.getFullYear(),1, 1 );
   let end_date = new Date(date.getFullYear(),date.getMonth()+1, 0);
-  query_string = 'select * from mydiary where date between date("' + start_date.toLocaleDateString() + '") and date("' + end_date.toLocaleDateString() + '");' ;
+  query_string = 'select * from diary where date between date("' + start_date.toLocaleDateString() + '") and date("' + end_date.toLocaleDateString() + '");' ;
   // query_string = 'select * from mydiary where memo like "%'+req.query.search+'%";' ;
   console.log ( query_string );
 
@@ -43,7 +42,6 @@ router.get('/test', function(req, res) {
     res.render('new_forms.ejs', { db:result, curr:date });
   });
 });
-
 
 
 module.exports = router;

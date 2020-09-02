@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="kr" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="user-scalable=no, width=device-width" />
+    <title>New record - 차계부</title>
+    <style type="text/css" media="screen and (max-width):900px">
+    </style>
+    <style type="text/css">
+      * {
+        padding: 2;
+        margin: 6;
+        font-size: 18pt;
+        background-color: #CCF;
+      }
+      li {
+        width: 100px;
+      }
+    </style>
+    <!-- <link rel="stylesheet" type="text/css" href="css/carstyle.css" /> -->
+  </head>
+  <body>
+      <H3>차계부 새 정보 등록</H3>
+
+ <!-- +----------+---------------+------+-----+---------+-------+
+      | Field    | Type          | Null | Key | Default | Extra |
+      +----------+---------------+------+-----+---------+-------+
+      | wrdate   | date          | NO   | PRI | NULL    |       |
+      | distance | int(11)       | NO   |     | NULL    |       |
+      | memo     | varchar(2000) | YES  |     | NULL    |       |
+      | price    | int(11)       | YES  |     | NULL    |       |
+      +----------+---------------+------+-----+---------+-------+ -->
+      <form action='car_new_Af' method='post'>
+        <ul>
+          <!-- <li><span id="date">2020-08-21</span> <span id="change_date" onclick="select_date">날짜변경</span> <span id="calendar" display="none"></span> </li> -->
+          <li><input placeholder="기록날짜" type="date" name="date" value="<%=new Date() %>" id="write_date"/> </li>
+          <li><input placeholder="누적거리" type="number" name="accum_distance" id="accum_distance" /> </li>
+          <li><input placeholder="휘발유" type="number" name="gasoline" step="0.001" id="gasoline_litter" /> </li>
+          <li><input placeholder="LPG" type="number" name="lpg" step="0.001" id="lpg_litter" /> </li>
+  				<li><input placeholder="금액" type="number" name="price" id="pulse" /> </li>
+          <li><textarea name="memo" rows="1" cols="18" id="maintenance_memo"></textarea> </li>
+  				<li><input type="submit" class="submit" name="action" value="기록저장" /> </li>
+  			</ul>
+      </form>
+
+  </body>
+</html>
