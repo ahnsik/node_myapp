@@ -2,3 +2,7 @@
   padding: 0;
   background-color: #565;
 }
+
+#accum_distance,#write_date,#gasoline_litter,#lpg_litter,#gasoline_litter,#price,#maintenance_memo {
+  width: "300px"
+}

@@ -5,12 +5,27 @@ var mysql = require('mysql');
 var db_config = require('../config/db_config.js');
 db_config.database = 'mydiary';             // DB 를 새로 지정.
 var db = mysql.createConnection(db_config);
-db.connect( function(err) {
-  if (err)
-    console.log('mysql connection error : ' + err);
-  else
-    console.log('mysql connected.');
-});
+
+function handleDisconnect() {
+  db.connect(function(err) {            
+    if(err) {                            
+      console.log('mysql connection error : ' + err);
+      setTimeout(handleDisconnect, 2000); 
+      console.log('retry connect after 2 sec..');
+    } else
+        console.log('mysql connected.');  
+  });
+
+  db.on('error', function(err) {
+    console.log('db error', err);
+    if(err.code === 'PROTOCOL_CONNECTION_LOST') { 
+      return handleDisconnect();                      
+    } else {                                    
+      throw err;                              
+    }
+  });
+}
+handleDisconnect();
 
 
 // // middleware that is specific to this router

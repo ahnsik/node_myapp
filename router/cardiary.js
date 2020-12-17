@@ -8,13 +8,30 @@ var mysql = require('mysql');
 var db_config = require('../config/db_config.js');
 db_config.database = 'carbook';             // DB 를 새로 지정.
 var db = mysql.createConnection(db_config);
-db.connect( function(err) {
-  if (err)
-    console.log('mysql connection error : ' + err);
-  else
-    console.log('mysql DB: "carbook" connected.');
-});
 
+// 타임아웃에 의해 MySQL 과의 접속이 자동으로 끊기게 되면 다시 재접속을 해서 계속 접속을 유지하게 만드는 함수.
+// -> 개선 방향 : TODO: DB에 계속 접속 중인 상태로 있는 게 아니라, DB 액세스 해야 할 시점에만 빠르게 접속해서 처리하고 접속을 끊는 게 낫지 않을까?  어차피 혼자 쓰는 건데..??
+function handleDisconnect() {
+  db.connect(function(err) {            
+    if(err) {                            
+      // console.log('error when connecting to db:', err);
+      console.log('mysql connection error : ' + err);
+      setTimeout(handleDisconnect, 2000); 
+      console.log('retry connect after 2 sec..');
+    } else
+      console.log('mysql DB: "carbook" connected.');
+  });
+
+  db.on('error', function(err) {
+    console.log('db error', err);
+    if(err.code === 'PROTOCOL_CONNECTION_LOST') { 
+      return handleDisconnect();                      
+    } else {                                    
+      throw err;                              
+    }
+  });
+}
+handleDisconnect();
 
 
 // // middleware that is specific to this router

@@ -33,14 +33,16 @@
       <form action='car_new_Af' method='post'>
         <ul>
           <!-- <li><span id="date">2020-08-21</span> <span id="change_date" onclick="select_date">날짜변경</span> <span id="calendar" display="none"></span> </li> -->
-          <li><input placeholder="기록날짜" type="date" name="date" value="<%=new Date() %>" id="write_date"/> </li>
-          <li><input placeholder="누적거리" type="number" name="accum_distance" id="accum_distance" /> </li>
-          <li><input placeholder="휘발유" type="number" name="gasoline" step="0.001" id="gasoline_litter" /> </li>
-          <li><input placeholder="LPG" type="number" name="lpg" step="0.001" id="lpg_litter" /> </li>
-  				<li><input placeholder="금액" type="number" name="price" id="pulse" /> </li>
-          <li><textarea name="memo" rows="1" cols="18" id="maintenance_memo"></textarea> </li>
+          <li>날짜<input placeholder="기록날짜" type="date" name="date" value="<%=new Date() %>" id="write_date"/> </li>
+          <li>거리<input placeholder="누적거리" type="number" name="accum_distance" id="accum_distance" /> </li>
+          <li>휘발유<input placeholder="휘발유" type="number" name="gasoline" step="0.001" id="gasoline_litter" /> </li>
+          <li>LPG <input placeholder="LPG" type="number" name="lpg" step="0.001" id="lpg_litter" /> </li>
+  				<li>금액<input placeholder="금액" type="number" name="price" id="price" /> </li>
+          <li>메모<textarea name="memo" rows="1" cols="18" id="maintenance_memo"></textarea> </li>
   				<li><input type="submit" class="submit" name="action" value="기록저장" /> </li>
   			</ul>
+        <hr>
+        <a href="/car/list">과거 목록 보기</a>
       </form>
 
   </body>
