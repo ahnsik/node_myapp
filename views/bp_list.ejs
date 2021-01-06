@@ -19,45 +19,36 @@
       <H3>최근 입력된 체성분 기록을 보여줌.</H3>
 
       <table border='1px'>
-          <!-- <colgroup>
-              <col width='60'><col width='80'><col width='200'><col width='100'>
-          </colgroup> -->
-          <thead>
-              <tr>
-                  <th>날짜</th>
-                  <th>혈압(수축기/이완기)</th>
-                  <th>맥박</th>
-                  <th>체중</th>
-                  <th>체지방률</th>
-                  <th>비만지수</th>
-                  <th>기초대사량</th>
-                  <th>BMI</th>
-              </tr>
-          </thead>
-          <tbody>
-              <% for(i = 0; i < list.length; i++) { %>
-               <tr>
-                <td><%=list[i].date_written %></td>
+        <!-- <colgroup>
+            <col width='60'><col width='80'><col width='200'><col width='100'>
+        </colgroup> -->
+        <!-- <thead>
+            <tr>
+                <th>날짜</th>
+                <th>누적주행거리</th>
+                <th>주유/정비내역</th>
+                <th>금액</th>
+                <th>실제주행거리</th>
+                <th>연비(1천원)</th>
+                <th>연비(리터당)</th>
+                <th>단가(1리터당)</th>
+            </tr>
+        </thead> -->
+        <tbody>
+            <% for(i = 0; i < list.length; i++) { %>
+             <tr>
+              <td><%=list[i].date_written %></td>
+            </tr>
+            <% } %>
+        </tbody>
+    </table boader='1'>
 
-                var params = [body.bp_high, body.bp_low, body.h_beat, body.weight, body
-                ., body.fatness, body.metabolism, body.bmi, body.slect_time, body.stretching, body.aerobic_workout, body.muscle_workout, body.diary_subject, "" ];
+    <!-- <script type="text/javascript"> -->
+    <%
+      function  DateFormat(d) {
+        return  d.getFullYear()+"-"+(d.getMonth()+1)+"-"+d.getDate();
+      } %>
+    <!-- </script> -->
 
-                <td><%=list[i].bp_high %> / <%=list[i].bp_low %> hmg</td>
-                <td><%=list[i].h_beat %>회</td>
-                <td><%=list[i].weight %> kg</td>
-                <td><%=list[i].body_fatrate %> %</td>
-                <td><%=list[i].metabolism %> </td>
-                <td><%=list[i].bmi %> kg</td>
-              </tr>
-              <% } %>
-          </tbody>
-      </table boader='1'>
-
-      <!-- <script type="text/javascript"> -->
-      <%
-        function  DateFormat(d) {
-          return  d.getFullYear()+"-"+(d.getMonth()+1)+"-"+d.getDate();
-        } %>
-      <!-- </script> -->
   </body>
 </html>

@@ -6,32 +6,33 @@ var router = require('express').Router();
 //// 차계부용 DB 를 열기
 var mysql = require('mysql');
 var db_config = require('../config/db_config.js');
-db_config.database = 'carbook';             // DB 를 새로 지정.
-var db = mysql.createConnection(db_config);
 
-// 타임아웃에 의해 MySQL 과의 접속이 자동으로 끊기게 되면 다시 재접속을 해서 계속 접속을 유지하게 만드는 함수.
-// -> 개선 방향 : TODO: DB에 계속 접속 중인 상태로 있는 게 아니라, DB 액세스 해야 할 시점에만 빠르게 접속해서 처리하고 접속을 끊는 게 낫지 않을까?  어차피 혼자 쓰는 건데..??
-function handleDisconnect() {
-  db.connect(function(err) {            
-    if(err) {                            
-      // console.log('error when connecting to db:', err);
+function access_db(sql_String, params, success_fucntion, fail_function) {
+  db_config.database = 'carbook';             // DB 를 새로 지정.
+  var db = mysql.createConnection(db_config);
+  db.connect(function(err) {
+    if(err) {
       console.log('mysql connection error : ' + err);
-      setTimeout(handleDisconnect, 2000); 
-      console.log('retry connect after 2 sec..');
-    } else
+    } else {
       console.log('mysql DB: "carbook" connected.');
-  });
-
-  db.on('error', function(err) {
-    console.log('db error', err);
-    if(err.code === 'PROTOCOL_CONNECTION_LOST') { 
-      return handleDisconnect();                      
-    } else {                                    
-      throw err;                              
     }
-  });
+    console.log('query string is ...\n' + sql_String);
+    db.query(sql_String, params, function(err, rows, fields) {
+        if(err) {
+          // console.log('query is not excuted. insert fail...\n' + err);
+          // res.send("<p>Car maintenance record: Insert/Update FAIL... </p>")
+          console.log('query fail');
+          fail_function(err, rows, fields);
+        } else {
+          console.log('query success');
+          success_fucntion(err, rows, fields);          // res.redirect('list');
+        }
+        db.end();
+    }); // end of query
+  });   // end of connect
 }
-handleDisconnect();
+
+
 
 
 // // middleware that is specific to this router
@@ -91,13 +92,12 @@ router.post('/car_new_Af', function(req, res) {
   var sql = 'INSERT INTO maintenance( wrdate, distance, lpg, gasoline, price, memo ) VALUES ( ?, ?, ?, ?, ?, ? )';
   var params = [timeStr, body.accum_distance, body.lpg, body.gasoline, body.price, memo ];
   console.log(sql);
-  db.query(sql, params, function(err) {
-      if(err) {
-        console.log('query is not excuted. insert fail...\n' + err);
-        res.send("<p>Car maintenance record: Insert/Update FAIL... </p>")
-      } else {
-        res.redirect('list');
-      }
+
+  access_db(sql, params, function(err, rows, fields) {   // if succeed
+    res.redirect('list');
+  }, function(err, rows, fields) {    // if failed
+    console.log('query is not excuted. insert fail...\n' + err);
+    res.send("<p>Car maintenance record: Insert/Update FAIL... </p>")
   });
 
 });
@@ -107,15 +107,15 @@ router.get('/list', function(req, res) {
   // var sql = 'SELECT DATE_FORMAT(wrdate,"%Y-%m-%d"),distance,memo,price from maintenance limit 5';      //  DATE_FORMAT(wrdate, "%Y-%m-%d")
   var sql = 'SELECT * from maintenance order by wrdate DESC limit 15';      //  DATE_FORMAT(wrdate, "%Y-%m-%d")
   console.log('QUERY string...' + sql );
-  db.query(sql, { }, function(err, rows, fields) {    //  wrdate:"2020-08-24"
-    if(err != null) {
-      console.log('query returns err=' + err);
-      res.send("<p>SELECT query FAIL... </p>")
-    } else {
-      console.log('QUERY result\n\terr=' + err+ '\n\trows=' + rows+ '\n\tfields=' + fields +'\n' );
-      res.render('car_history_list', { list: rows } );
-    }
+
+  access_db(sql, {}, function(err, rows, fields) {   // if succeed
+    console.log('QUERY result\n\terr=' + err+ '\n\trows=' + rows+ '\n\tfields=' + fields +'\n' );
+    res.render('car_history_list', { list: rows } );
+  }, function(err, rows, fields) {                  // if failed
+    console.log('query returns err=' + err);
+    res.send("<p>SELECT query FAIL... </p>")
   });
-});
+
+});       // ennd of get
 
 module.exports = router;
