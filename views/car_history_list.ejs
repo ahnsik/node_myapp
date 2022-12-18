@@ -28,7 +28,7 @@
                   <th>누적주행거리</th>
                   <th>주유/정비내역</th>
                   <th>금액</th>
-                  <th>실제주행거리</th>
+                  <th>주행거리</th>
                   <th>연비(1천원)</th>
                   <th>연비(리터당)</th>
                   <th>단가(1리터당)</th>
@@ -37,7 +37,7 @@
           <tbody>
               <% for(i = 0; i < list.length; i++) { %>
                <tr>
-                <td><%=list[i].wrdate %></td>
+                <td><%=list[i].wrdate.substring(2,10) %> </td>
                 <td><%=list[i].distance %> km</td>
                 <td><%=list[i].memo %></td>
                 <td><%=list[i].price %> 원</td>
@@ -52,11 +52,5 @@
           </tbody>
       </table boader='1'>
 
-      <!-- <script type="text/javascript"> -->
-      <%
-        function  DateFormat(d) {
-          return  d.getFullYear()+"-"+(d.getMonth()+1)+"-"+d.getDate();
-        } %>
-      <!-- </script> -->
   </body>
 </html>

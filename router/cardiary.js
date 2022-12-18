@@ -4,12 +4,12 @@
 var router = require('express').Router();
 
 //// 차계부용 DB 를 열기
-var mysql = require('mysql');
-var db_config = require('../config/db_config.js');
+const mysql = require('mysql');
+const db_config = require('../config/db_config.js');
 
 function access_db(sql_String, params, success_fucntion, fail_function) {
   db_config.database = 'carbook';             // DB 를 새로 지정.
-  var db = mysql.createConnection(db_config);
+  const db = mysql.createConnection(db_config);
   db.connect(function(err) {
     if(err) {
       console.log('mysql connection error : ' + err);
@@ -27,9 +27,22 @@ function access_db(sql_String, params, success_fucntion, fail_function) {
           console.log('query success');
           success_fucntion(err, rows, fields);          // res.redirect('list');
         }
-        db.end();
+       // db.end();
     }); // end of query
   });   // end of connect
+
+  db.on('error', function(err) {
+    console.log('[][][][] db(car) error [][][][]\n ', err);
+    if(err.code === 'PROTOCOL_CONNECTION_LOST') {   
+      // need to re-connect()..  refer: https://coddingjiwon.tistory.com/19
+    } else if(err.code === 'PROTOCOL_PACKETS_OUT_OF_ORDER') { 
+      // return handleDisconnect();
+    } else {                                    
+      console.log('[][][][] error code = ', err.code );
+      // throw err;                              
+    }
+  });
+
 }
 
 

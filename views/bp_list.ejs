@@ -22,22 +22,36 @@
         <!-- <colgroup>
             <col width='60'><col width='80'><col width='200'><col width='100'>
         </colgroup> -->
-        <!-- <thead>
+        <thead>
             <tr>
-                <th>날짜</th>
-                <th>누적주행거리</th>
-                <th>주유/정비내역</th>
-                <th>금액</th>
-                <th>실제주행거리</th>
-                <th>연비(1천원)</th>
-                <th>연비(리터당)</th>
-                <th>단가(1리터당)</th>
+                <th>일시</th>
+                <th colspan="2">혈압</th>
+                <th>맥박</th>
+                <th>체중</th>
+                <th>체지방율</th>
+                <th>비만도</th>
+                <th>내장지방</th>
+                <th>bmi</th>
+                <th>수면시간</th>
+                <th>스트레칭</th>
+                <th>유산소운동</th>
             </tr>
-        </thead> -->
+        </thead>
         <tbody>
             <% for(i = 0; i < list.length; i++) { %>
              <tr>
-              <td><%=list[i].date_written %></td>
+              <td><%=list[i].date_written.substring(2,10) %></td>
+              <td><%=list[i].bp_h %></td>
+              <td><%=list[i].bp_l %></td>
+              <td><%=list[i].pulse %></td>
+              <td><%=list[i].weight %></td>
+              <td><%=list[i].body_fat %></td>
+              <td><%=list[i].fat_factor %></td>
+              <td><%=list[i].metabolism %></td>
+              <td><%=list[i].bmi %></td>
+              <td><%=list[i].slepttime %></td>
+              <td><%=list[i].stretching %></td>
+              <td><%=list[i].aerobic_workout %></td>
             </tr>
             <% } %>
         </tbody>

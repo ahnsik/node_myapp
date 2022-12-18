@@ -28,7 +28,7 @@ function access_db(sql_String, params, success_fucntion, fail_function) {
     if(err) {
       console.log('mysql connection error : ' + err);
     } else {
-      console.log('mysql DB: "carbook" connected.');
+      console.log('mysql DB: "health_diary" connected.');
     }
     console.log('query string is ...\n' + sql_String);
     db.query(sql_String, params, function(err, rows, fields) {
@@ -44,6 +44,19 @@ function access_db(sql_String, params, success_fucntion, fail_function) {
         db.end();
     }); // end of query
   });   // end of connect
+
+  db.on('error', function(err) {
+    console.log('[][][][] db(BP) error [][][][]\n', err);
+    if(err.code === 'PROTOCOL_CONNECTION_LOST') { 
+      // return handleDisconnect();                      
+    } else if(err.code === 'PROTOCOL_PACKETS_OUT_OF_ORDER') { 
+      // return handleDisconnect();
+    } else {
+      console.log('[][][][] error code = ', err.code );
+      // throw err;
+    }
+  });
+
 }
 
 
@@ -86,8 +99,8 @@ router.post('/new_Af', function(req, res) {
     body.metabolism = null;
 
   // var sql = 'INSERT INTO health_diary VALUES( NOW(), ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ? )';
-  var sql = 'INSERT INTO health_diary VALUES( NOW(), ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ? )';
-  var params = [body.bp_high, body.bp_low, body.h_beat, body.weight, body.fat_rate, body.fatness, body.metabolism, body.bmi, body.slept_time, body.stretching, body.aerobic_workout, body.muscle_workout, body.diary_subject, "" ];
+  var sql = 'INSERT INTO health_diary VALUES( ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ? )';
+  var params = [body.date, body.bp_high, body.bp_low, body.h_beat, body.weight, body.fat_rate, body.fatness, body.metabolism, body.bmi, body.slept_time, body.stretching, body.aerobic_workout, body.muscle_workout, body.diary_subject, body.memo ];
   console.log(sql);
   access_db(sql, params, function(err, rows, fields) {   // if succeed
     console.log('REDIRECT TO /list...\n');

@@ -17,8 +17,9 @@ function handleDisconnect() {
   });
 
   db.on('error', function(err) {
-    console.log('db error', err);
+    console.log('[][][][] db(diary) error [][][][]\nMust be check MySQL connection. MySQL could be disconnected automatically when over 8 hours connection. [][]\n', err);
     if(err.code === 'PROTOCOL_CONNECTION_LOST') { 
+      console.log('PROTOCOL_CONNECTION_LOST error \n');
       return handleDisconnect();                      
     } else {                                    
       throw err;                              

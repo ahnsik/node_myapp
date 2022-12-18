@@ -62,10 +62,10 @@ app.get('/', function (req, res) {
 /* 여기까지는 게시판의 기본 기능을 확인하기 위한 임시 테스트 기능들. */
 
 
-app.use('/diary', require('./router/diary') );
 app.use('/car', require('./router/cardiary') );
 app.use('/money', require('./router/moneybook') );
 app.use('/bp', require('./router/bp_diary') );
+// app.use('/diary', require('./router/diary') );
 
 
 // app.get('/list', function (req, res) {

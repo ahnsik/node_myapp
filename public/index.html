@@ -32,6 +32,46 @@
 <br/>
     </p>
 
+    <p>
+      <hr>
+      <h3> ▶MySQL 데이터 추가, 수정, 삭제 (INSERT, UPDATE, DELETE) </h3>
+    <h4> ▶데이터 추가 (INSERT) </h4>
+      <b>사용법</b><br/>
+      INSERT INTO 테이블명 [컬럼1, 컬럼2, ...] VALUES (값1, 값2, ...);<br/>
+      <br/>
+      예제 : 전체 컬럼<br/>
+      INSERT INTO table_name VALUES (1105, '테스트', '대한민국');<br/>
+      <br/>
+      예제 : 일부 컬럼<br/>
+      INSERT INTO table_name (id, name) VALUES (1105, '테스트');<br/>
+      <br/>
+      예제 : 다수 추가<br/>
+      INSERT INTO table_name VALUES (1105, '테스트', '대한민국'),(1106, '테스트2', '미국');<br/>
+      <br/>
+      <br/>
+    <h4> ▶데이터 수정 (UPDATE) </h4>
+      <b>사용법</b><br/>
+      <br/>
+      UPDATE 테이블명 SET 컬럼1 = 수정값1 [, 컬럼2 = 수정값2 ...] [WHERE 조건];<br/>
+      <br/>
+      예제 : 테이블 데이터 전체 수정<br/>
+      UPDATE table_name SET country = '대한민국';<br/>
+      <br/>
+      예제 : 테이블 데이터 일부 수정<br/>
+      UPDATE table_name SET name = '테스트 변경', country = '대한민국' WHERE id = 1105;<br/>
+      <br/>
+      <br/>
+    <h4> ▶데이터 삭제 (DELETE) </h4>
+      <b>사용법</b><br/>
+      <br/>
+      DELETE FROM 테이블명 [WHERE 조건];<br/>
+      <br/>
+      예제 : 테이블 데이터 전체 삭제<br/>
+      DELETE FROM table_name;<br/>
+      <br/>
+      예제 : 테이블 데이터 일부 삭제<br/>
+      DELETE FROM table_name WHERE id = 1105;<br/>
+    </p>
   </body>
 
 </html>
