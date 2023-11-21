@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <link rel="shortcut icon" href="./favicon.ico">
+  <meta charset="UTF-8" lang="kr">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <meta name="viewport" content="user-scalable=no, width=device-width, initial-scale=1">
+  <style>
+    /* Fonts for KOREAN, CHINESE, JAPANESE.. */
+    @import url(//fonts.googleapis.com/earlyaccess/notosanskr.css); 
+    @import url(//fonts.googleapis.com/earlyaccess/notosansjp.css); 
+    @import url(//fonts.googleapis.com/earlyaccess/notosanssc.css); 
+    :lang(kr) {
+      font-family: 'Noto Sans KR', sans-serif;
+    }
+    :lang(zh-sc) {
+      font-family: 'Noto Sans SC', sans-serif;
+    }
+    :lang(jp) {
+      font-family: 'Noto Sans JP', sans-serif;
+    }
+
+    /* Simple Reset CSS */
+    body {
+        font-family: "Noto Sans KR", sans-serif;    /* 이것만 살려 보자 */
+        color: #104441;
+        background-color: #d2e6ec;
+        -webkit-font-smoothing: antialiased;
+        -webkit-text-size-adjus: 100%;  /* iphone font size 변경 방지 */
+        line-height: 150%;
+    }
+    aside {        /* for fixed side bar */
+        /* position: fixed; */
+        top: 60px;
+        bottom: 0;
+        /* width: 200px;   */
+        padding-top: 25px;
+    }
+    li { list-style: decimal; }
+    article h1 {
+      font-family: 'Noto Sans SC', sans-serif;
+      font-size: xx-large;
+      background-color: #b8f0ed;
+      border-radius: 20px;
+      padding: 5px 20px;
+    }
+    .zh {
+      font-size: xx-large;
+    }
+    .gotoTop {
+      font-size: small;
+      vertical-align: top;
+      margin-right: 40px;
+    }
+    .kr {
+      font-size: large;
+      color: #9ba9b1;
+    }
+    li .zh {
+      font-size: 1.0em;
+    }
+    li .kr {
+      font-size: 0.8em;
+    }
+
+    .dialog {
+      background-color: #b8f0ed;
+      font-family: 'Noto Sans SC', sans-serif;
+      color: darkgray;
+      line-height: 1.5em;
+      margin-left: 40px;
+      padding: 5px 20px;
+    }
+    .dialog .en {
+      background-color: #b8f0ed;
+      font-family: 'Noto Sans SC', sans-serif;
+      color: gray;
+      font-size: small;
+      margin-left: 0px;
+      padding: 0px;
+    }
+    .dialog .kr {
+      background-color: #b8f0ed;
+      font-family: 'Noto Sans KR', sans-serif;
+      color: gray;
+      font-size: small;
+      padding: 0px;
+    }
+
+    .expression {
+      background-color: #b8def0;
+      color: #777;
+      line-height: 1.5em;
+      margin-left: 40px;
+      padding: 5px 20px;
+    }
+    .expression .zh {
+      font-family: 'Noto Sans SC', sans-serif;
+      font-size: x-large;
+    }
+    .expression .en {
+      font-family: 'Noto Sans SC', sans-serif;
+      font-size: small;
+    }
+    .expression .kr {
+      font-family: 'Noto Sans KR', sans-serif;
+      color: #777;
+      font-size: small;
+    }
+
+    span.man {
+      font-size: x-large;
+      color: darkblue;
+    }
+    span.woman {
+      font-size: x-large;
+      color: purple;
+    }
+  </style>
+</head>
+
+<body>
+  <div id="wrap">
+
+    <div id="content-wrap">
+      <aside>
+        <h2><img src="chinese200.png" width="60" height="60"> 중국인이 가장 많이 쓰는 중국어 표현 200</h2>
+
+        <ol id="chapter">
+        </ol>
+      </aside>
+      <hr>
+      <section id="contents">
+
+<% for(i = 0; i < data.length; i++) { %>
+  <%- data[i].content %>
+<% } %>
+
+      </section>
+
+
+<script>    /* 목록 자동 만들기 */
+    window.onload = function main() {
+      let dom_chapter = document.getElementById("chapter");
+      let articles = document.getElementsByTagName("article");
+      for (var i=0; i<articles.length; i++) {
+        // let dom_zh = articles[i].getElementsByClassName("zh");
+        let subject = articles[i].getElementsByClassName("zh");
+        let subject_kr = articles[i].getElementsByClassName("kr");
+        console.log("i="+i+", " + subject[0].innerHTML + " : " + subject_kr[0].innerHTML );
+        let new_chaper = document.createElement("li");
+        new_chaper.innerHTML = "<a href='#"+articles[i].id+"'><span class='zh'>"+subject[0].innerHTML+"</span><span class='kr'>"+subject_kr[0].innerHTML+"</span></a>";
+        dom_chapter.append(new_chaper);
+      }
+    }
+
+</script>
+
+</body>
+</html>
+

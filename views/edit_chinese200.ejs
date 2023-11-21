@@ -1,0 +1,363 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<!--    레이아웃을 만드는 Flex 와 Grid 기능에 대해서,  아래의 링크들을 참조해 볼 것. !!
+ FLEX : https://studiomeal.com/archives/197
+
+ GRID : https://studiomeal.com/archives/533 
+-->
+
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+    <title>Split Text Editors</title>
+    <style>
+        /* Fonts for KOREAN, CHINESE, JAPANESE.. */
+        @import url(//fonts.googleapis.com/earlyaccess/notosanskr.css); 
+        @import url(//fonts.googleapis.com/earlyaccess/notosansjp.css); 
+        @import url(//fonts.googleapis.com/earlyaccess/notosanssc.css); 
+        :lang(kr) {
+        font-family: 'Noto Sans KR', sans-serif;
+        }
+        :lang(zh-sc) {
+        font-family: 'Noto Sans SC', sans-serif;
+        }
+        :lang(jp) {
+        font-family: 'Noto Sans JP', sans-serif;
+        }
+
+        body {
+            margin: 0;
+            height: 100vh; /* Make the body take the full height of the viewport */
+        }
+        header {
+            height: 40px;
+            background-color: #333;
+            color: #fff;
+            padding: 15px;
+            text-align: center;
+        }
+        nav {
+            float: left;
+            width: 240px;
+            background-color: #555;
+            padding: 15px;
+            box-sizing: border-box;
+            height: 100vh;
+            overflow: auto;
+        }
+        .editor {
+            display: flex;
+            flex-direction: column;
+        }
+        .editor-container {
+            padding: 20px;
+            /* flex: 1; Make both editors take equal space */
+            display: inline-flex;
+            align-items: stretch;
+            flex-basis: auto;
+        }
+        .editarea {
+            flex: 1; /* Each editor takes full space within its container */
+            border: 1px solid #ccc;
+            overflow: auto; /* Add scrollbars if content overflows */
+            margin: 5px; /* Add a margin of 30px to each editor */
+        }
+        .non-editable {
+            background-color: #eee; /* Add a background color to indicate non-editable */
+        }
+        #markdown_view {
+            width:100%;
+            height:100%;
+            padding: 10px;
+            background-color: lightgoldenrodyellow;
+        }
+        #edit_area {
+            width:100%;
+            height:100%;
+            padding: 10px;
+            background-color: whitesmoke;
+        }
+
+    article h1 {
+      font-family: 'Noto Sans SC', sans-serif;
+      font-size: xx-large;
+      background-color: #b8f0ed;
+      border-radius: 20px;
+      padding: 5px 20px;
+    }
+    .zh {
+      font-size: xx-large;
+    }
+    .gotoTop {
+      font-size: small;
+      vertical-align: top;
+      margin-right: 20px;
+    }
+    .kr {
+      font-size: large;
+      color: #9ba9b1;
+    }
+
+
+    /* Simple Reset CSS */
+    #markdown_view {
+        font-family: "Noto Sans KR", sans-serif;    /* 이것만 살려 보자 */
+        color: #104441;
+        height: 60vh;
+        background-color: #d2e6ec;
+        -webkit-font-smoothing: antialiased;
+        -webkit-text-size-adjus: 100%;  /* iphone font size 변경 방지 */
+        line-height: 150%;
+    }
+
+    article h1 {
+      font-family: 'Noto Sans SC', sans-serif;
+      font-size: xx-large;
+      background-color: #b8f0ed;
+      border-radius: 20px;
+      padding: 5px 20px;
+    }
+    .zh {
+      font-size: xx-large;
+    }
+    .gotoTop {
+      font-size: small;
+      vertical-align: top;
+      margin-right: 40px;
+    }
+    .kr {
+      font-size: large;
+      color: #9ba9b1;
+    }
+
+    .dialog {
+      background-color: #b8f0ed;
+      font-family: 'Noto Sans SC', sans-serif;
+      color: darkgray;
+      line-height: 1.5em;
+      margin-left: 40px;
+      padding: 5px 20px;
+    }
+    .dialog .en {
+      background-color: #b8f0ed;
+      font-family: 'Noto Sans SC', sans-serif;
+      color: gray;
+      font-size: small;
+      margin-left: 0px;
+      padding: 0px;
+    }
+    .dialog .kr {
+      background-color: #b8f0ed;
+      font-family: 'Noto Sans KR', sans-serif;
+      color: gray;
+      font-size: small;
+      padding: 0px;
+    }
+
+    .expression {
+      background-color: #b8def0;
+      color: #777;
+      line-height: 1.5em;
+      margin-left: 40px;
+      padding: 5px 20px;
+    }
+    .expression .zh {
+      font-family: 'Noto Sans SC', sans-serif;
+      font-size: x-large;
+    }
+    .expression .en {
+      font-family: 'Noto Sans SC', sans-serif;
+      font-size: small;
+    }
+    .expression .kr {
+      font-family: 'Noto Sans KR', sans-serif;
+      color: #777;
+      font-size: small;
+    }
+
+    span.man {
+      font-size: x-large;
+      color: darkblue;
+    }
+    span.woman {
+      font-size: x-large;
+      color: purple;
+    }
+
+</style>
+</head>
+<body>
+
+    <nav>
+        <ul>
+            <li><a href="#">Home</a></li>
+            <li><a href="#">About</a></li>
+            <li><a href="#">Services</a></li>
+            <li><a href="#">Contact</a></li>
+        </ul>
+    </nav>
+
+    <form action='/chinese_dialog/new_dialog' method='post'>
+    <h1>중국어 표현 200 입력하기.</h1>
+    DB index: <input id="db_index" type="number"/><button id="getBtn">READ</button><button id="getBtn">DELETE</button><span class="spacer">  </span><button id="getBtn">WRITE</button>
+    <div class="editor">
+        <div class="editor-container">
+            <div class="editarea non-editable" id="markdown_view-container">
+                <div contenteditable="false" id="markdown_view">
+                    <!-- Your content for the first editor goes here (non-editable) -->
+                    This is not editable.
+                </div>
+            </div>
+            <div class="editarea" id="edit_area-container">
+                <!-- <div contenteditable="true" id="edit_area" oninput="marked_refresh();"> -->
+                    <!-- Your content for the second editor goes here (editable) -->
+                <!-- </div> -->
+                <textarea id="edit_area" name="dlg_text" oninput="marked_refresh();">
+                </textarea>
+            </div>
+        </div>
+    </div>
+    <input type="submit" class="submit" name="action" value="APPEND to DB"/>
+    <h5>tail block here.</h5>
+    </form>
+
+
+    <script>    /* 목록 자동 만들기 */
+    window.onload = function main() {
+        let dom_chapter = document.getElementById("chapter");
+        let articles = document.getElementsByTagName("article");
+        for (var i=0; i<articles.length; i++) {
+        let subject = articles[i].getElementsByTagName("h1");
+        let new_chaper = document.createElement("li");
+        new_chaper.innerHTML = "<a href='#"+articles[i].id+"' class='active'mmm>"+subject[0].innerHTML+"</a>";
+        dom_chapter.append(new_chaper);
+        }
+    }
+    </script>
+
+    <script>
+    const isEmpty = (str) => (!str?.length);
+    var mode = "none";
+    
+    var marked_refresh = () => {
+        var html_text = "";
+        var origin_text = document.getElementById('edit_area').value;
+
+        var lines = origin_text.split('\n');
+        let lineNum = 0;
+
+        // 시작하는 빈 공간을 skip.
+        while(lineNum<lines.length) {
+            // if ( (lines[lineNum] != "") && (lines[lineNum] != undefined) ) {       // 빈 문자열 이면 skip.
+            if ( ! isEmpty(lines[lineNum]) ) {       // 빈 문자열 이면 skip.
+                console.log("lineNum=",lineNum, "lines[lineNum]=", lines[lineNum]);
+                switch(  lines[lineNum].charAt(0) ) {
+                    case '#':
+                        html_text +=_change_mode("title");
+                        console.log("[ Title ]=", lines[lineNum]);
+                        html_text += parse_title( lines[lineNum] );
+                        break;
+                    case "*":
+                        html_text += _change_mode("dialog");
+                        console.log("[ Man ]=", lines[lineNum]);
+                        html_text += parse_man( lines[lineNum] );
+                        break;
+                    case "+":
+                        html_text += _change_mode("dialog");
+                        console.log("[ Women ]=", lines[lineNum]);
+                        html_text += parse_woman( lines[lineNum] );
+                        break;
+                    case ">":
+                        html_text += _change_mode("expression");
+                        console.log("[ expression ]=", html_text);
+                        html_text += parse_expression( lines[lineNum] );
+                        break;
+                    default:
+                        console.log("[ Unknown. ]=", lines[lineNum]);
+                        break;
+                }
+            }
+            lineNum++;
+        }
+        // 맨 마지막엔 TAG 들을 닫는다. 
+        html_text += '</p>\n<hr>\n</article>\n';
+        document.getElementById('markdown_view').innerHTML = html_text;
+        console.log("=====================");
+        console.log(html_text);
+    };
+
+    _change_mode = (new_mode) => {
+        if (mode != new_mode) {         // mode 가 변경될 때에만 
+            switch(mode) {  // 이전 상태의 모드가 
+                case "title":   // title 이었다면, 새로운 모드는 dialog 를 시작.
+                    mode = new_mode;
+                    console.log(" new mode = dialog");
+                    return '<p class="dialog">\n';
+                case "dialog":  // dialog 였으면, expression 시작
+                    mode = new_mode;
+                    console.log(" new mode = expression");
+                    return '</p>\n<p class="expression">';
+                default:        // 몰라. 아무것도 안한다.
+                    break;
+            }
+        }
+        // console.log(" mode not changed");
+        mode = new_mode;
+        return "";      // 변경 없음. 아무것도 추가하지 않음.
+    }
+
+    var parse_title = (text) => {
+        var html_out="";
+        var title_split = text.split("#");
+        //console.log( title_split );
+
+        html_out += '<article id='+title_split[1]+'>\n';
+        html_out += '  <h1><span class="zh">'+title_split[1]+'</span>';
+        html_out += '  <span class="kr">'+title_split[2]+'</span>';
+        html_out += '  <span class="gotoTop"><a href="#chapter">▲</a></span></h1>';
+        return html_out;
+    }
+    var parse_man = (text) => {
+        var html_out = "";
+        console.log(" text :" + text );
+        if (text.indexOf("***") == 0 ) {        // 한글 번역
+            html_out += '<span class="kr">' + text.substring(3)+'</span><br/>';
+        } else if (text.indexOf("**") == 0 ) {
+            html_out += '<span class="en">' + text.substring(2)+'</span><br/>';
+        } else {
+            html_out += '<span class="man">' + text.substring(1)+'</span><br/>';
+        }
+        console.log("parse_man :" + html_out );
+        return html_out;
+    }
+    var parse_woman = (text) => {
+        var html_out = "";
+        console.log(" text :" + text );
+        if (text.indexOf("+++") == 0 ) {        // 한글 번역
+            html_out += '<span class="kr">' + text.substring(3)+'</span><br/>';
+        } else if (text.indexOf("++") == 0 ) {
+            html_out += '<span class="en">' + text.substring(2)+'</span><br/>';
+        } else {
+            html_out += '<span class="woman">' + text.substring(1)+'</span><br/>';
+        }
+        console.log("parse_woman :" + html_out );
+        return html_out;
+    }
+    var parse_expression = (text) => {
+        var html_out = "";
+        console.log(" text :" + text );
+        if (text.indexOf(">>>") == 0 ) {        // 한글 번역
+            html_out += '<span class="kr">' + text.substring(3)+'</span><br/>';
+        } else if (text.indexOf(">>") == 0 ) {
+            html_out += '<span class="en">' + text.substring(2)+'</span><br/>';
+        } else {
+            html_out += '<span class="zh">' + text.substring(1)+'</span><br/>';
+        }
+        return html_out;
+    }
+    </script>
+</body>
+</html>
