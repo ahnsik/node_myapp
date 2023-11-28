@@ -203,6 +203,7 @@
     <form action='/chinese_dialog/new_dialog' method='post'>
     <h1>중국어 표현 200 입력하기.</h1>
     DB index: <input id="db_index" type="number"/><button id="getBtn">READ</button><button id="getBtn">DELETE</button><span class="spacer">  </span><button id="getBtn">WRITE</button>
+    <p>한자 병음 변환: <a href="https://www.qqxiuzi.cn/zh/pinyin/">https://www.qqxiuzi.cn/zh/pinyin</a>/</p>
     <div class="editor">
         <div class="editor-container">
             <div class="editarea non-editable" id="markdown_view-container">
@@ -215,8 +216,7 @@
                 <!-- <div contenteditable="true" id="edit_area" oninput="marked_refresh();"> -->
                     <!-- Your content for the second editor goes here (editable) -->
                 <!-- </div> -->
-                <textarea id="edit_area" name="dlg_text" oninput="marked_refresh();">
-                </textarea>
+                <textarea id="edit_area" name="dlg_text" oninput="marked_refresh();"></textarea>
             </div>
         </div>
     </div>
@@ -314,7 +314,7 @@
         var title_split = text.split("#");
         //console.log( title_split );
 
-        html_out += '<article id='+title_split[1]+'>\n';
+        html_out += '<article id='+title_split[1].trim()+'>\n';
         html_out += '  <h1><span class="zh">'+title_split[1]+'</span>';
         html_out += '  <span class="kr">'+title_split[2]+'</span>';
         html_out += '  <span class="gotoTop"><a href="#chapter">▲</a></span></h1>';

@@ -125,15 +125,15 @@ _change_mode = (new_mode) => {
 }
 
 var parse_title = (text) => {
-    var html_out="";
-    var title_split = text.split("#");
-    //console.log( title_split );
+  var html_out="";
+  var title_split = text.split("#");
+  //console.log( title_split );
 
-    html_out += '<article id="'+title_split[1]+'">\n';
-    html_out += '  <h1><span class="zh">'+title_split[1]+'</span>';
-    html_out += '  <span class="kr">'+title_split[2]+'</span>';
-    html_out += '  <span class="gotoTop"><a href="#chapter">▲</a></span></h1>';
-    return html_out;
+  html_out += '<article id="'+title_split[1].trim()+'">\n';
+  html_out += '  <h1><span class="zh">'+title_split[1].trim()+'</span>';
+  html_out += '  <span class="kr">'+title_split[2].trim()+'</span>';
+  html_out += '  <span class="gotoTop"><a href="#chapter">▲</a></span></h1>';
+  return html_out;
 }
 var parse_man = (text) => {
     var html_out = "";

@@ -149,7 +149,7 @@
         let subject_kr = articles[i].getElementsByClassName("kr");
         console.log("i="+i+", " + subject[0].innerHTML + " : " + subject_kr[0].innerHTML );
         let new_chaper = document.createElement("li");
-        new_chaper.innerHTML = "<a href='#"+articles[i].id+"'><span class='zh'>"+subject[0].innerHTML+"</span><span class='kr'>"+subject_kr[0].innerHTML+"</span></a>";
+        new_chaper.innerHTML = "<a href='#"+articles[i].id.trim()+"'> <span class='zh'>"+subject[0].innerHTML+"</span> <span class='kr'>"+subject_kr[0].innerHTML+"</span></a>";
         dom_chapter.append(new_chaper);
       }
     }
