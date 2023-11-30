@@ -1,32 +1,44 @@
+<!DOCTYPE html>
 <html>
-    <head>
-        <meta charset="utf-8">
-        <title>게시글</title>
-    </head>
-    <body>
-        <h2>게시글 리스트</h2>
-        <table border='1'>
-            <colgroup>
-                <col width='60'><col width='200'><col width='100'>
-            </colgroup>
-            <thead>
-                <tr>
-                    <th>글번호</th>
-                    <th>글제목</th>
-                    <th>작성자</th>
-                </tr>
-            </thead>
-            <tbody>
-                <% for(i = 0; i < list.length; i++) { %>
-                <tr>
-                    <td><%=i+1 %></td>
-                    <td><%=list[i].TITLE %></td>
-                    <td><%=list[i].ID %></td>
-                </tr>
-                <% } %>
-            </tbody>
-        </table boader='1'>
+<head>
+    <link rel="shortcut icon" href="favicon.ico">
+    <meta charset="UTF-8" lang="kr">
+    <title>나의 일기장</title>
+    <link rel="stylesheet" type="text/css" href="./css/all_fonts.css" />
+    <link rel="stylesheet" type="text/css" href="./css/ccash_style.css" />
+</head>
+<body>
+    <h2>게시글 리스트</h2>
 
-        <button onclick="location.href='../write'">글쓰기</button>
-    </body>
+    <div id="content-wrap">
+        <aside>
+            <h2>여기엔 달력 또는 목록을 표시하도록 하고</h2>
+            <ul id="chapter">
+            </ul>
+        </aside>
+        <hr>
+        <section id="contents">
+        <% for(i = 0; i < data.length; i++) { %>
+            <article id=<%- encodeURIComponent(data[i].title) %>>
+            <h2><%- data[i].title %></h2>
+            <span class="date_written"><%- data[i].wrdate %></span>
+            <p><%- data[i].content %></p>
+            </article>
+        <% } %>
+        </section>
+    </div>
+</body>
+
+<script>    /* 목록 자동 만들기 */
+window.onload = function main() {
+    let dom_chapter = document.getElementById("chapter");
+    let articles = document.getElementsByTagName("article");
+    for (var i=0; i<articles.length; i++) {
+    let subject = articles[i].getElementsByTagName("h2");
+    let new_chaper = document.createElement("li");
+    new_chaper.innerHTML = "<a href='#"+articles[i].id+"' class='active'>"+subject[0].innerHTML+"</a>";
+    dom_chapter.append(new_chaper);
+    }
+}
+</script>
 </html>

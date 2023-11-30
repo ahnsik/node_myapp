@@ -1,15 +1,103 @@
 <html>
     <head>
         <meta charset="utf-8">
-        <title>글쓰기</title>
+        <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+        <style>
+            body {
+                margin: 0;
+                height: 100vh; /* Make the body take the full height of the viewport */
+                background-image: "./node_myapp/public/bg/railway_rails_mountains_147169_3187x4780.jpg";
+            }
+            header {
+                height: 40px;
+                background-color: #333;
+                color: #fff;
+                padding: 15px;
+                text-align: center;
+            }
+            .calendar {
+                float: left;
+                width: 240px;
+                background-color: #555;
+                padding: 15px;
+                /* box-sizing: border-box;
+                height: 100vh; */
+                overflow: auto;
+            }
+            .editor {
+                display: inline-flex;
+                flex-direction: column;
+            }
+            #markd_view {
+              width: 400px;
+              height: 600px;
+              background-color: lightblue;
+              display: inline-block;
+            }
+            #edit_area{
+              width: 400px;
+              height: 600px;
+              background-color: lightslategray;
+              display: inline-block;
+            }
+        </style>
+        <title>마크다운으로 일기 쓰기</title>
     </head>
     <body>
-        <h2>게시글 작성</h2>
-        <form action='/writeAf' method='post'>
-            작성자 : <input type='text' name='id'><br>
-            제목 : <input type='text' name='title'><br>
-            내용 : <textarea name='content'></textarea><br>
-            <button type='submit'>글쓰기</button>
-        </form>
+        <div id="wrap">
+            <div class="header">일기장 상단메뉴 - 작고 얇게 표시</div>
+            <div class="contents">
+                <div class="sidebar">
+                <ul class="calendar">
+                    날짜별로 입력된 일기장의 목록
+                    <li>첫번째 일기</li>
+                    <li>두번째 일기</li>
+                    <li>세번째 일기</li>
+                </ul>
+                </div>
+                <div class="editor">
+                    <form action='/diary/record' method='post'>
+                        작성자 : <input type='text' name='id' id="myid"> 암호 : <input type='text' name='pw' id="mypw"><br>
+                        날짜 : <input type='date' name='wrdate'><br>
+                        제목 : <input type='text' name='title'><br>
+                        <div class="markd_view" id="markdown_view"></div>
+                        <textarea class="editor" name="diary_text" id="edit_input" oninput="marked_refresh();"></textarea>
+                        <button type='submit' onclick="save_cookie();">기록</button>
+                    </form>
+                </div>
+            </div>
+            <div class="footer">마지막 Footer 영역</div>
+        </div>  <!-- end of wrap   -->
+
+        <script>
+            // window.onload = () => {
+            //     let mycookie = document.cookie;
+            //     let mycookies = mycookie.split(";");
+            //     let myid = "";
+            //     let mypw = "";
+            //     for (var i=0; i<mycookies.length; i++ ) {
+            //         console.log("coockie[",i,"]=", mycookies[i] );
+            //         if (mycookies[i].indexOf("myid") >= 0) {
+            //             myid = mycookies[i].substring(5);
+            //             document.getElementById("myid").innerText = myid;
+            //         }
+            //         if (mycookies[i].indexOf("mypw") >= 0) {
+            //             mypw = mycookies[i].substring(5);
+            //             document.getElementById("mypw").innerText = mypw;
+            //         }
+            //     }
+            //     // console.log (" myid=", myid, ", mypw=", mypw );
+            // }
+            // var save_cookie = () => {
+            //     document.cookie = "myid="+document.getElementById("myid").value;
+            //     document.cookie = "mypw="+document.getElementById("mypw").value;
+            //     console.log (" saving cookie..", document.cookie  );
+            // }
+            var marked_refresh = () => {
+                // console.log(  "marked_refresh() calling.." );
+                document.getElementById('markdown_view').innerHTML =
+                    marked.parse(document.getElementById('edit_input').value);
+            };
+        </script>
     </body>
 </html>

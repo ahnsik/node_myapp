@@ -65,7 +65,7 @@ app.get('/', function (req, res) {
 app.use('/car', require('./router/cardiary') );
 app.use('/money', require('./router/moneybook') );
 app.use('/bp', require('./router/bp_diary') );
-//app.use('/diary', require('./router/diary') );
+app.use('/diary', require('./router/diary') );
 app.use('/chinese_dialog', require('./router/chinese_dialog') );
 
 
