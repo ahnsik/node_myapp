@@ -49,16 +49,13 @@
             <div class="contents">
                 <div class="sidebar">
                 <ul class="calendar">
-                    날짜별로 입력된 일기장의 목록
-                    <li>첫번째 일기</li>
-                    <li>두번째 일기</li>
-                    <li>세번째 일기</li>
+                    여기에 달력을 표시하여 날짜를 선택할 수 있도록 하자.
                 </ul>
                 </div>
                 <div class="editor">
                     <form action='/diary/record' method='post'>
-                        작성자 : <input type='text' name='id' id="myid"> 암호 : <input type='text' name='pw' id="mypw"><br>
-                        날짜 : <input type='date' name='wrdate'><br>
+                        작성자 : <input type='text' name='id' id='myid'> 암호 : <input type='text' name='pw' id='mypw'><br>
+                        날짜 : <input type='date' name='wrdate' id='date' value= '<%= new Date().toISOString().split('T')[0]; %>'><br>
                         제목 : <input type='text' name='title'><br>
                         <div class="markd_view" id="markdown_view"></div>
                         <textarea class="editor" name="diary_text" id="edit_input" oninput="marked_refresh();"></textarea>
@@ -70,7 +67,7 @@
         </div>  <!-- end of wrap   -->
 
         <script>
-            // window.onload = () => {
+            window.onload = () => {
             //     let mycookie = document.cookie;
             //     let mycookies = mycookie.split(";");
             //     let myid = "";
@@ -87,7 +84,7 @@
             //         }
             //     }
             //     // console.log (" myid=", myid, ", mypw=", mypw );
-            // }
+            }
             // var save_cookie = () => {
             //     document.cookie = "myid="+document.getElementById("myid").value;
             //     document.cookie = "mypw="+document.getElementById("mypw").value;

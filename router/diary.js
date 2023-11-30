@@ -57,7 +57,6 @@ router.get('/', function(req, res) {
       item.wrdate = rows[i].wrdate;
       item.title = rows[i].title;
       item.content = marked.parse(rows[i].content);   // 본문 내용은 markdown 으로 변경해서 렌더링 한다.
-      // item.content = rows[i].content;   // markdown 라이브러리가, docker 로는 동작하지 않고 에러가 발생하므로, 임시로. 
       db_content.push( item );
     }
     // console.log("[] dump - content:\n", db_content );
@@ -74,6 +73,7 @@ router.get('/about', function(req, res) {
 // 새로운 일기 글쓰기.
 router.get('/write', function(req, res) {
   // res.send('새로운 글쓰기 - routed.');
+  let writing_date = new Date().toISOString().split('T')[0];
   res.render('write');
 });
 
