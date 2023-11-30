@@ -19,7 +19,7 @@
         <hr>
         <section id="contents">
         <% for(i = 0; i < data.length; i++) { %>
-            <article id=<%- encodeURIComponent(data[i].title) %>>
+            <article id=<%- data[i].title.replaceAll(' ', '_'); %>>
             <h2><%- data[i].title %></h2>
             <span class="date_written"><%- data[i].wrdate %></span>
             <p><%- data[i].content %></p>

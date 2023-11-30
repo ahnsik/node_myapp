@@ -1,4 +1,4 @@
-FROM node:11
+FROM node:18
 
 #앱 디렉토리 생성
 WORKDIR /usr/src/app
