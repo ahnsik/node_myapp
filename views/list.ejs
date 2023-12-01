@@ -8,25 +8,39 @@
     <link rel="stylesheet" type="text/css" href="./css/ccash_style.css" />
 </head>
 <body>
-    <h2>게시글 리스트</h2>
+  <div id="wrap">
+    <header>
+      <a class="logo" href="#home"><img src="cas_logo.svg"></a>
+      <nav>
+        <ul class="nav-items">
+          <li><a href="#contact">Interesting</a></li>
+          <li><a href="#contact">Contact</a></li>
+          <li><a href="#about">About</a></li>
+        </ul>
+      </nav>
+    </header>
 
     <div id="content-wrap">
-        <aside>
-            <h2>여기엔 달력 또는 목록을 표시하도록 하고</h2>
-            <ul id="chapter">
-            </ul>
-        </aside>
-        <hr>
-        <section id="contents">
-        <% for(i = 0; i < data.length; i++) { %>
-            <article id=<%- data[i].title.replaceAll(' ', '_'); %>>
-            <h2><%- data[i].title %></h2>
-            <span class="date_written"><%- data[i].wrdate %></span>
-            <p><%- data[i].content %></p>
-            </article>
-        <% } %>
-        </section>
-    </div>
+      <aside>
+        <h1>글<sup>주</sup><sub>워</sub>모음</h1>
+        <ul id="chapter">
+        </ul>
+      </aside>
+
+      <section id="contents">
+      <% for(i = 0; i < data.length; i++) { %>
+        <article id=<%- data[i].title.replaceAll(' ', '_'); %>>
+        <h2><%- data[i].title %></h2>
+        <span class="date_written"><%- data[i].wrdate %></span>
+        <p><%- data[i].content %></p>
+        </article>
+      <% } %>
+      </section>
+    </div>      <!-- end of content-wrap -->
+    <footer>
+      Mail to:  <a href="mailto:ccash@daum.net">CAS </a>
+    </footer>
+  </div>        <!-- end of wrap   -->
 </body>
 
 <script>    /* 목록 자동 만들기 */

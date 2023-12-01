@@ -72,9 +72,18 @@ router.get('/about', function(req, res) {
 });
 // 새로운 일기 글쓰기.
 router.get('/write', function(req, res) {
-  // res.send('새로운 글쓰기 - routed.');
-  let writing_date = new Date().toISOString().split('T')[0];
-  res.render('write');
+  console.log('새로운 글쓰기 - routed.');
+  const sql_String = "SELECT wrdate,title from diary order by wrdate desc";
+  access_db(sql_String, {}, function(err, rows, fields) {   // if succeed
+    res.render("diarywrite", { written_date: new Date().toISOString().split('T')[0], data: rows });
+  }, function(err, rows, fields) {    // if failed
+    console.log('[][][][] db(diary) error [][][][]\n', err);
+    res.send("<p>(bp/list) SELECT query FAIL... </p>")
+  });
+
+  // const written_date = new Date().toISOString().split('T')[0]; // Format: YYYY-MM-DD
+  // // console.log (new Date().toLocaleString(), written_date);
+  // res.render('diarywrite', { written_date } );
 });
 
 router.post('/record', function(req, res) {

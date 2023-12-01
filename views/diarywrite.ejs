@@ -1,0 +1,102 @@
+<html>
+    <head>
+        <meta charset="utf-8">
+        <link rel="stylesheet" type="text/css" href="/css/all_fonts.css" />
+        <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+        <style>
+            body {
+                font-family: "SeoulNamsan", Helvetica, Arial, sans-serif;
+                margin: 0;
+                /* background-image: "/bg/railway_rails_mountains_147169_3187x4780.jpg"; */
+            }
+            .header {
+                height: 20px;
+                background-color: #333;
+                color: #fff;
+                padding: 15px;
+                text-align: center;
+            }
+            .calendar {
+                float: left;
+                width: 240px;
+                background-color: #BBB;
+                padding: 15px;
+                box-sizing: border-box;
+                height: 60vh;
+                overflow: auto;
+            }
+            #title {
+                width: 50%;
+            }
+            .editor {
+                display: flex;
+                flex-direction: column;
+            }
+            .editor-container {
+                width: 100%;
+                margin: 10px;
+                /* flex: 1; Make both editors take equal space */
+                display: inline-flex;
+                align-items: stretch;
+                flex-basis: auto;
+            }
+            .markd_view {
+              flex: 1;
+              background-color: lightblue;
+              display: inline-block;
+            }
+            .edit_area{
+              flex: 1;
+              min-height: 300px;
+              background-color: lightslategray;
+              display: inline-block;
+            }
+            #edit_input {
+                width: 100%;
+                height: 100%;
+                background-color: rgba( 255,255,255, .3);
+            }
+            button {
+                margin: 0px 20px;
+            }
+        </style>
+        <title>마크다운으로 일기 쓰기</title>
+    </head>
+    <body>
+        <div id="wrap">
+            <div class="header">오늘 하루를 기록한다. - 일기장 상단 메뉴</div>
+            <div class="contents">
+                <div class="sidebar">
+                <ul class="calendar">
+                    <% for(i = 0; i < data.length; i++) { %>
+                        <p><span class="date_written"><%- data[i].wrdate %></span>
+                        <br> <span><%- data[i].title %></span></p>
+                    <% } %>
+                </ul>
+                </div>
+                <div class="editor">
+                    <form action='/diary/record' method='post'>
+                        작성자 : <input type='text' name='id' id='myid'> 암호 : <input type='text' name='pw' id='mypw'><br>
+                        날짜 : <input type='date' name='wrdate' id='date' value='<%= written_date %>'><br>
+                        제목 : <input type='text' name='title' id='title'><br>
+                        <div class="editor-container">
+                            <div class="markd_view"><div id="markdown_view"></div></div>
+                            <div class="edit_area"><textarea name="diary_text" id="edit_input" oninput="marked_refresh();"></textarea></div>
+                        </div>
+                        <button type='submit' onclick="save_cookie();">기록</button>
+                    </form>
+                </div>
+            </div>
+            <div class="footer">마지막 Footer 영역</div>
+        </div>  <!-- end of wrap   -->
+
+        <script>
+            window.onload = () => {
+            }
+            var marked_refresh = () => {
+                document.getElementById('markdown_view').innerHTML =
+                    marked.parse(document.getElementById('edit_input').value);
+            };
+        </script>
+    </body>
+</html>
