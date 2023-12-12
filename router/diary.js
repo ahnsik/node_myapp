@@ -46,7 +46,7 @@ function access_db(sql_String, params, success_fucntion, fail_function) {
 
 router.get('/', function(req, res) {
   console.log("일기장 데이터 읽어 오기");
-  const sql_String = "SELECT * from diary";
+  const sql_String = "SELECT * from diary order by wrdate desc";
 
   access_db(sql_String, {}, function(err, rows, fields) {   // if succeed
     // console.log(' QUERY result\n\terr=' + err+ '\n\trows=' + rows+ '\n\tfields=' + fields +'\n' );
@@ -80,7 +80,6 @@ router.get('/write', function(req, res) {
     console.log('[][][][] db(diary) error [][][][]\n', err);
     res.send("<p>(bp/list) SELECT query FAIL... </p>")
   });
-
   // const written_date = new Date().toISOString().split('T')[0]; // Format: YYYY-MM-DD
   // // console.log (new Date().toLocaleString(), written_date);
   // res.render('diarywrite', { written_date } );

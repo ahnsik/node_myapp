@@ -176,7 +176,7 @@ a { text-decoration: none; }
   }
   aside {
     /* for fixed side bar */
-    font-family: "BinggraeMelona", Helvetica, Arial, sans-serif;
+    font-family: "NEXON Lv1 Gothic OTF", Helvetica, Arial, sans-serif;
     position: fixed;
     top: 60px;
     bottom: 0;
@@ -220,6 +220,7 @@ a { text-decoration: none; }
     padding: 25px;
     background-color: white;
     margin-left: 225px;
+    font-family: 'NEXON Lv2 Gothic', Arial, Helvetica, sans-serif;
   }
   article pre {
     background-color: rgb(230, 222, 207);
