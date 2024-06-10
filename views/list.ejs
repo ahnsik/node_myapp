@@ -32,6 +32,10 @@
         <article id=<%- data[i].title.replaceAll(' ', '_'); %>>
         <h2><%- data[i].title %></h2>
         <span class="date_written"><%- data[i].wrdate %></span>
+        <!-- <span class="btn" id="edit" onclick="edit_post('<%- data[i].wrdate %>');">edit</span>
+        <span class="btn" id="delete" onclick="delete_post('<%- data[i].wrdate %>');">delete</span> -->
+        <span class="btn" id="edit"><a href="diary/write?wrdate=<%- data[i].wrdate %>">edit</a></span>
+        <span class="btn" id="delete"><a href="diary/delete?wrdate=<%- data[i].wrdate %>">delete</a></span>
         <p><%- data[i].content %></p>
         </article>
       <% } %>
@@ -54,5 +58,12 @@ window.onload = function main() {
     dom_chapter.append(new_chaper);
     }
 }
+function edit_post(id) {
+  console.log("edit post where wrdate="+id);
+}
+function delete_post(id) {
+  console.log("delete post where wrdate="+id);
+}
+
 </script>
 </html>

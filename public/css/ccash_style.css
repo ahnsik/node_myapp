@@ -101,6 +101,10 @@ a { text-decoration: none; }
     background-color: rgb(153, 153, 153);
     padding: 0px 20px;
   }
+  article .btn {
+    background-color: rgb(255, 171, 75);
+    padding: 2px 12px;
+  }
 }
 
 @media ( min-width: 769px ) {
@@ -227,16 +231,37 @@ a { text-decoration: none; }
     padding: 0px 20px;
   }
   article .date_written {
-    color: #888;
+    color: #899;
     background-color: #DDD;
   }
-}
+
+
+  article .btn {
+    background-color: rgb(255, 171, 75);
+    /* background: url("../icons/delete_button.svg");
+    background-size: 1.0em; */
+    width: 1.0em;
+    height: 1.0em;
+    border-radius: 8px;
+    padding: 2px 12px;
+    margin: 2px;
+  }
+  article .btn:hover {
+    background-color: rgb(75, 132, 255);
+    /* background: url("../icons/delete_button.svg");
+    background-size: 1.0em; */
+    width: 1.0em;
+    height: 1.0em;
+    border-radius: 8px;
+    padding: 2px 12px;
+    margin: 2px;
+  }
 
 /* footer */
 footer {
   /* footer를 aside위에 올리기 위해 사용(부유객체) */
   /* position: fixed; */
-  font-family: 'Helvetica';
+  font-family: 'sans-serif';
   position: absolute;
   height: 36px;
   width: 100%;
