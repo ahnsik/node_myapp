@@ -70,30 +70,30 @@ var convert_to_html = (origin_text) => {
     while(lineNum<lines.length) {
         // if ( (lines[lineNum] != "") && (lines[lineNum] != undefined) ) {       // 빈 문자열 이면 skip.
         if ( ! isEmpty(lines[lineNum]) ) {       // 빈 문자열 이면 skip.
-            console.log("lineNum=",lineNum, "lines[lineNum]=", lines[lineNum]);
+            // console.debug("lineNum=",lineNum, "lines[lineNum]=", lines[lineNum]);
             switch(  lines[lineNum].charAt(0) ) {
                 case '#':
                     html_text +=_change_mode("title");
-                    console.log("[ Title ]=", lines[lineNum]);
+                    // console.debug("[ Title ]=", lines[lineNum]);
                     html_text += parse_title( lines[lineNum] );
                     break;
                 case "*":
                     html_text += _change_mode("dialog");
-                    console.log("[ Man ]=", lines[lineNum]);
+                    // console.debug("[ Man ]=", lines[lineNum]);
                     html_text += parse_man( lines[lineNum] );
                     break;
                 case "+":
                     html_text += _change_mode("dialog");
-                    console.log("[ Women ]=", lines[lineNum]);
+                    // console.debug("[ Women ]=", lines[lineNum]);
                     html_text += parse_woman( lines[lineNum] );
                     break;
                 case ">":
                     html_text += _change_mode("expression");
-                    console.log("[ expression ]=", html_text);
+                    // console.debug("[ expression ]=", html_text);
                     html_text += parse_expression( lines[lineNum] );
                     break;
                 default:
-                    console.log("[ Unknown. ]=", lines[lineNum]);
+                    // console.debug("[ Unknown. ]=", lines[lineNum]);
                     break;
             }
         }
@@ -182,7 +182,7 @@ router.get('/', function(req, res) {
   const sql_String = "SELECT * from chinese_dialog";    // ${mysql.escapeId('application.table')};   //--> refer :https://stackoverflow.com/questions/57598136/error-er-no-db-error-no-database-selected-node-js-mysql-when-always-using
 
   access_db(sql_String, {}, function(err, rows, fields) {   // if succeed
-    console.log('chinese200.. read success from DB mydiary.chinese_dialog QUERY result\n\terr=' + err+ '\n\trows=' + rows+ '\n\tfields=' + fields +'\n' );
+    // console.log('chinese200.. read success from DB mydiary.chinese_dialog QUERY result\n\terr=' + err+ '\n\trows=' + rows+ '\n\tfields=' + fields +'\n' );
     console.log("typeof rows :", typeof(rows) );
     var db_content = [];
     for (var i=0; i<rows.length; i++) {
@@ -190,7 +190,7 @@ router.get('/', function(req, res) {
       item.content = convert_to_html(rows[i].content);
       db_content.push( item );
     }
-    console.log("content:\n", db_content );
+    // console.log("content:\n", db_content );
     res.render("chinese200", { data: db_content });
   }, function(err, rows, fields) {    // if failed
     console.log('[][][][] db(BP) error [][][][]\n', err);
@@ -208,12 +208,32 @@ router.get('/write', function(req, res) {
   console.log("중국어회화200 추가로 입력하기");
   res.render('edit_chinese200');
 });
+// Read a record from DB.
+router.get('/read', function(req, res) {
+  console.log("중국어회화200 하나의 글 읽기 - number="+req.query.number);
+  const sql_String = "SELECT content from chinese_dialog where number="+req.query.number;
+  access_db(sql_String, {}, function(err, rows, fields) {   // if succeed
+    // console.log('chinese200.. read success from DB mydiary.chinese_dialog QUERY result\n\terr=' + err+ '\n\trows=' + rows+ '\n\tfields=' + fields +'\n' );
+    if (rows.length > 0) {
+      console.log("\n================================\nresult :", rows[0].content );
+      res.send(rows[0].content);
+    }
+  }, function(err, rows, fields) {    // if failed
+    console.log('[][][][] db(BP) error [][][][]\n', err);
+    res.send("<p>(bp/list) SELECT query FAIL... </p>")
+  });
+});
+// delete a record with parameter(number)
+router.get('/delete', function(req, res) {
+  console.log("중국어회화200 하나의 글 삭제 - number="+req.query.number);
+});
+
 
 router.use(bodyParser.urlencoded({extended: false}));
 
 // edit_chinese 로 부터 새로운 항목이 추가되면.. DB에 추가해야 함.
 // new Record to DB. posted.
-router.post('/new_dialog', function(req, res) {
+router.post('/new_post', function(req, res) {
   var body = req.body;
   console.log("======================\nPOST from edit_chinese200...\n");
   console.log("------- data : --------------\n  dlg_text=", body.dlg_text, ", DATE=", new Date() ) ;

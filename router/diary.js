@@ -72,31 +72,52 @@ router.get('/about', function(req, res) {
 });
 // 새로운 일기 글쓰기.
 router.get('/write', function(req, res) {
-  console.log('새로운 글쓰기 - routed.');
-  const sql_String = "SELECT wrdate,title from diary order by wrdate desc";
+  var wrdate;
+  if (req.query.wrdate != null) {
+    wrdate = new Date(req.query.wrdate).toISOString().split('T')[0];
+  } else {
+    wrdate = new Date().toISOString().split('T')[0];
+  }
+  console.log('글 Edit 쓰기 - wrdate = '+ wrdate);
+
+  const sql_String = "SELECT wrdate,title,content from diary order by wrdate desc";
   access_db(sql_String, {}, function(err, rows, fields) {   // if succeed
-    res.render("diarywrite", { written_date: new Date().toISOString().split('T')[0], data: rows });
+    // console.log('parameters - rows = '+rows+', fields='+ fields);
+    res.render("diarywrite", { written_date: wrdate, items: rows, data: fields });
   }, function(err, rows, fields) {    // if failed
     console.log('[][][][] db(diary) error [][][][]\n', err);
     res.send("<p>(bp/list) SELECT query FAIL... </p>")
   });
-  // const written_date = new Date().toISOString().split('T')[0]; // Format: YYYY-MM-DD
-  // // console.log (new Date().toLocaleString(), written_date);
-  // res.render('diarywrite', { written_date } );
+});
+
+// delete.
+router.get('/delete', function(req, res) {
+  const sql_String = 'DELETE from diary where wrdate="' + req.query.wrdate + '";';
+  console.log('Delete.. - wrdate='+ req.query.wrdate, " \n SQL = " , sql_String );
+  access_db(sql_String, {}, function(err, rows, fields) {   // if succeed
+    res.redirect('/diary');
+
+  }, function(err, rows, fields) {    // if failed
+    console.log('[][][][] db(diary) error [][][][]\n', err);
+    res.send("<p>(bp/list) 'Delete.. - wrdate = "+ req.query.wrdate+" was failed. Check DB again.</p>")
+  });
 });
 
 router.post('/record', function(req, res) {
   var body = req.body;
   console.log("======================\nPOST from diary/write...\n");
 
-  var sql = 'INSERT INTO diary (wrdate, content, title) VALUES ( ?, ?, ? )';
+  // var sql = 'INSERT INTO diary (wrdate, content, title) VALUES ( ?, ?, ? )';   // 기존 코드 
+  // 키 값(wrdate)이 중복되면 Update 아니면 새로 추가하도록 함.  refer https://passwd.tistory.com/entry/MySQL-INSERT-ON-DUPLICATE-KEY-UPDATE-insert-or-update
+  var sql = 'INSERT INTO diary (wrdate, content, title) VALUES ( ?, ?, ? ) ON DUPLICATE KEY UPDATE content=VALUES(content),title=VALUES(title);';    
   var params = [body.wrdate, body.diary_text, body.title];
 
   access_db(sql, params, function(err, rows, fields) {   // if succeed
     console.log('write success... REDIRECT TO /diary...\n======================\n');
     res.redirect('/diary');
   }, function(err, rows, fields) {    // if failed
-    console.log('query is not excuted. insert fail...\n' + err);
+    // console.log('query is not excuted. insert fail...\n' + err);
+    console.log('query ', sql, ' is not excuted. insert fail...\n\t' + err);
     res.send("<p>Diary : record update FAIL... </p>")
   });
 })

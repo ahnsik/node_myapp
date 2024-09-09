@@ -1,7 +1,7 @@
 /* Simple Reset CSS */
 
 li { list-style: none; }
-a { text-decoration: none; }
+a { text-decoration: none; text-decoration-line: none; }
 
 @media ( max-width: 768px ) {
   /* 모바일 브라우저 용 - 휴대폰 - max-width: 768px 는 0 ~ 768 까지 */
@@ -101,6 +101,10 @@ a { text-decoration: none; }
     background-color: rgb(153, 153, 153);
     padding: 0px 20px;
   }
+  article .btn {
+    background-color: rgb(255, 171, 75);
+    padding: 2px 2px;
+  }
 }
 
 @media ( min-width: 769px ) {
@@ -118,7 +122,7 @@ a { text-decoration: none; }
     line-height: 150%;
   }
   li { list-style: none; }
-  a { text-decoration: none; }
+  a { text-decoration: none; text-decoration-line: none; }
   h1, h2, h3, h4, h5, h6, p {
     margin: 10px 5px;
   }
@@ -227,16 +231,37 @@ a { text-decoration: none; }
     padding: 0px 20px;
   }
   article .date_written {
-    color: #888;
+    color: #899;
     background-color: #DDD;
   }
-}
+
+
+  article .btn {
+    background-color: rgb(255, 171, 75);
+    /* background: url("../icons/delete_button.svg");
+    background-size: 1.0em; */
+    width: 1.0em;
+    height: 1.0em;
+    border-radius: 8px;
+    padding: 2px 2px;
+    margin: 2px;
+  }
+  article .btn:hover {
+    background-color: rgb(75, 132, 255);
+    /* background: url("../icons/delete_button.svg");
+    background-size: 1.0em; */
+    width: 1.0em;
+    height: 1.0em;
+    border-radius: 8px;
+    padding: 2px 2px;
+    margin: 2px;
+  }
 
 /* footer */
 footer {
   /* footer를 aside위에 올리기 위해 사용(부유객체) */
   /* position: fixed; */
-  font-family: 'Helvetica';
+  font-family: 'sans-serif';
   position: absolute;
   height: 36px;
   width: 100%;

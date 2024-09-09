@@ -75,27 +75,48 @@
                 </div>
                 <div class="editor">
                     <form action='/diary/record' method='post'>
-                        작성자 : <input type='text' name='id' id='myid'> 암호 : <input type='text' name='pw' id='mypw'><br>
-                        날짜 : <input type='date' name='wrdate' id='date' value='<%= written_date %>'><br>
-                        제목 : <input type='text' name='title' id='title'><br>
-                        <div class="editor-container">
-                            <div class="markd_view"><div id="markdown_view"></div></div>
-                            <div class="edit_area"><textarea name="diary_text" id="edit_input" oninput="marked_refresh();"></textarea></div>
-                        </div>
+                        <% for(i = 0; i < items.length; i++) { %>
+                            <!-- Finding..  : i=", <%= i %>, ",wrdate=", <%= items[i].wrdate %>, ",written_date=", <%= written_date %> <br> -->
+                            <% if(items[i].wrdate == written_date) { %>
+                                작성자 : <input type='text' name='id' id='myid'> 암호 : <input type='text' name='pw' id='mypw'><br>
+                                날짜 : <input type='date' name='wrdate' id='date' value='<%= written_date %>'><br>
+                                제목 : <input type='text' name='title' id='title'><br>
+                                <div class="editor-container">
+                                    <div class="markd_view"><div id="markdown_view"></div></div>
+                                    <div class="edit_area"><textarea name="diary_text" id="edit_input" oninput="marked_refresh();"><%= items[i].content %></textarea></div>
+                                </div>
+                            <% } %>
+                        <% } %>
                         <button type='submit' onclick="save_cookie();">기록</button>
                     </form>
                 </div>
             </div>
             <div class="footer">마지막 Footer 영역</div>
+            <div id="log_output"></div>
         </div>  <!-- end of wrap   -->
 
         <script>
             window.onload = () => {
+                console.log(" Writing.. wrdate=<%=written_date%>" );
+                console.log(" Writing.. content=<%=data.toString()%>" );
             }
             var marked_refresh = () => {
                 document.getElementById('markdown_view').innerHTML =
                     marked.parse(document.getElementById('edit_input').value);
+
+                //// 
+                edit_input.addEventListener("compositionstart", handleEvent);
+                edit_input.addEventListener("compositionupdate", handleEvent);
+                edit_input.addEventListener("compositionend", handleEvent);
             };
+            function handleEvent(event) {
+                log(event.data+`\n`);
+            };
+            function log(msg) {
+                var log_window = document.getElementById("log_output");
+                log_window.innerText = log_window.innerText + msg;
+            };
+            
         </script>
     </body>
 </html>

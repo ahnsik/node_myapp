@@ -200,10 +200,18 @@
         </ul>
     </nav>
 
-    <form action='/chinese_dialog/new_dialog' method='post'>
     <h1>중국어 표현 200 입력하기.</h1>
-    DB index: <input id="db_index" type="number"/><button id="getBtn">READ</button><button id="getBtn">DELETE</button><span class="spacer">  </span><button id="getBtn">WRITE</button>
-    <p>한자 병음 변환: <a href="https://www.qqxiuzi.cn/zh/pinyin/">https://www.qqxiuzi.cn/zh/pinyin</a>/</p>
+    DB index: <input id="db_index" type="number"/><button id="readBtn" onclick="readFromDB();">READ</button><button id="deleteBtn" onclick="deleteFromDB();">DELETE</button><span class="spacer">  </span><button id="updateBtn" onclick="updateDB();">UPDATE</button>
+    <p>편집 방법 : <br/>
+    <ul>
+        <li><b>TITLE : </b> # 로 구분한다. ex) #汉语#중국어# </li>
+        <li><b>대화(남) : </b> * 로 중국어, ** 로 병음표시 *** 로 한국어 번역.</li>
+        <li><b>대화(여) : </b> + 로 중국어, ++ 로 병음표시 +++ 로 한국어 번역.</li>
+        <li><b>활용표현 : </b> > 로 중국어, >> 로 병음표시 >>> 로 한국어 번역.</li>
+    </ul>
+    <p>한자 병음 변환: <a href="https://www.qqxiuzi.cn/zh/pinyin/" target="_blank">https://www.qqxiuzi.cn/zh/pinyin</a>/</p>
+
+    <form action='/chinese_dialog/new_post' method='post'>
     <div class="editor">
         <div class="editor-container">
             <div class="editarea non-editable" id="markdown_view-container">
@@ -227,14 +235,14 @@
 
     <script>    /* 목록 자동 만들기 */
     window.onload = function main() {
-        let dom_chapter = document.getElementById("chapter");
-        let articles = document.getElementsByTagName("article");
-        for (var i=0; i<articles.length; i++) {
-        let subject = articles[i].getElementsByTagName("h1");
-        let new_chaper = document.createElement("li");
-        new_chaper.innerHTML = "<a href='#"+articles[i].id+"' class='active'mmm>"+subject[0].innerHTML+"</a>";
-        dom_chapter.append(new_chaper);
-        }
+        // let dom_chapter = document.getElementById("chapter");
+        // let articles = document.getElementsByTagName("article");
+        // for (var i=0; i<articles.length; i++) {
+        //     let subject = articles[i].getElementsByTagName("h1");
+        //     let new_chaper = document.createElement("li");
+        //     new_chaper.innerHTML = "<a href='#"+articles[i].id+"' class='active'mmm>"+subject[0].innerHTML+"</a>";
+        //     dom_chapter.append(new_chaper);
+        // }
     }
     </script>
 
@@ -358,6 +366,32 @@
         }
         return html_out;
     }
-    </script>
+
+    var readFromDB = () => {
+        let edit_text = document.getElementById('edit_area');
+        let index = document.getElementById('db_index').value;
+        let url = 'http://ccash2.gonetis.com:8088/chinese_dialog/read?number='+index;
+
+        ////  nodemyapp - chinese_dialog API 호출
+        var xmlhttp = new XMLHttpRequest();
+        xmlhttp.onreadystatechange = function() {
+            if (this.readyState == 4 && this.status == 200) {
+                edit_text.value = this.responseText;
+            } else {
+                edit_text.value = "";
+            }
+        };
+        xmlhttp.open("GET", url, true);
+        xmlhttp.send();
+    }
+    var deleteFromDB = () => {
+        let index = document.getElementById('db_index').value;
+        let url = 'http://ccash2.gonetis.com:8088/chinese_dialog/delete?number='+index;
+    }
+    var updateDB = () => {
+
+    }
+ 
+</script>
 </body>
 </html>
