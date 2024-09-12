@@ -65,14 +65,14 @@
         <div id="wrap">
             <div class="header">오늘 하루를 기록한다. - 일기장 상단 메뉴</div>
             <div class="contents">
-                <div class="sidebar">
+                <!-- <div class="sidebar">
                 <ul class="calendar">
                     <% for(i = 0; i < data.length; i++) { %>
                         <p><span class="date_written"><%- data[i].wrdate %></span>
-                        <br> <span><%- data[i].title %></span></p>
+                        <br> <span><%- data[i].title %></span> [][] 이거 확인 필요. [][] </p>
                     <% } %>
                 </ul>
-                </div>
+                </div> -->
                 <div class="editor">
                     <form action='/diary/record' method='post'>
                         <% for(i = 0; i < items.length; i++) { %>
@@ -80,7 +80,7 @@
                             <% if(items[i].wrdate == written_date) { %>
                                 작성자 : <input type='text' name='id' id='myid'> 암호 : <input type='text' name='pw' id='mypw'><br>
                                 날짜 : <input type='date' name='wrdate' id='date' value='<%= written_date %>'><br>
-                                제목 : <input type='text' name='title' id='title'><br>
+                                제목 : <input type='text' name='title' id='title' value='<%= items[i].title %>'><br>
                                 <div class="editor-container">
                                     <div class="markd_view"><div id="markdown_view"></div></div>
                                     <div class="edit_area"><textarea name="diary_text" id="edit_input" oninput="marked_refresh();"><%= items[i].content %></textarea></div>
