@@ -72,10 +72,6 @@ router.get('/about', function(req, res) {
 });
 // 새로운 일기 글쓰기.
 router.get('/write', function(req, res) {
-<<<<<<< HEAD
-=======
-  console.log('새로운 글쓰기 - routed.');
->>>>>>> 701cb7e8375eb0c60fda5c17b512fd9452eab9d5
   var wrdate;
   if (req.query.wrdate != null) {
     wrdate = new Date(req.query.wrdate).toISOString().split('T')[0];
