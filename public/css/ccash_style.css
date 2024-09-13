@@ -103,7 +103,11 @@ a { text-decoration: none; text-decoration-line: none; }
   }
   article .btn {
     background-color: rgb(255, 171, 75);
+<<<<<<< HEAD
     padding: 2px 2px;
+=======
+    padding: 2px 12px;
+>>>>>>> 701cb7e8375eb0c60fda5c17b512fd9452eab9d5
   }
 }
 
@@ -243,7 +247,11 @@ a { text-decoration: none; text-decoration-line: none; }
     width: 1.0em;
     height: 1.0em;
     border-radius: 8px;
+<<<<<<< HEAD
     padding: 2px 2px;
+=======
+    padding: 2px 12px;
+>>>>>>> 701cb7e8375eb0c60fda5c17b512fd9452eab9d5
     margin: 2px;
   }
   article .btn:hover {
@@ -253,7 +261,11 @@ a { text-decoration: none; text-decoration-line: none; }
     width: 1.0em;
     height: 1.0em;
     border-radius: 8px;
+<<<<<<< HEAD
     padding: 2px 2px;
+=======
+    padding: 2px 12px;
+>>>>>>> 701cb7e8375eb0c60fda5c17b512fd9452eab9d5
     margin: 2px;
   }
 

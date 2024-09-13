@@ -36,9 +36,14 @@
         <span class="date_written"><%- data[i].wrdate %></span>
         <!-- <span class="btn" id="edit" onclick="edit_post('<%- data[i].wrdate %>');">edit</span>
         <span class="btn" id="delete" onclick="delete_post('<%- data[i].wrdate %>');">delete</span> -->
+<<<<<<< HEAD
         <span class="btn" id="edit"><a href="diary/write?wrdate=<%- data[i].wrdate %>">🛠️</a></span> 
         <!-- <span class="btn" id="delete" onclick="make_confirm();"><a href="diary/delete?wrdate=<%- data[i].wrdate %>">delete</a></span> -->
         <span class="btn" id="delete" onclick="make_confirm('<%- data[i].wrdate %>');">❌</span>
+=======
+        <span class="btn" id="edit"><a href="diary/write?wrdate=<%- data[i].wrdate %>">edit</a></span>
+        <span class="btn" id="delete"><a href="diary/delete?wrdate=<%- data[i].wrdate %>">delete</a></span>
+>>>>>>> 701cb7e8375eb0c60fda5c17b512fd9452eab9d5
         <p><%- data[i].content %></p>
         </article>
       <% } %>
@@ -68,6 +73,7 @@ function delete_post(id) {
   console.log("delete post where wrdate="+id);
 }
 
+<<<<<<< HEAD
 function make_confirm(wrdate) {
   if (confirm(wrdate+"\n 이 데이터를 정말로 삭제하시겠습니까?")) {
     // Yes를 눌렀을 경우 서버에 삭제 요청
@@ -79,5 +85,7 @@ function make_confirm(wrdate) {
   }
 }
 
+=======
+>>>>>>> 701cb7e8375eb0c60fda5c17b512fd9452eab9d5
 </script>
 </html>

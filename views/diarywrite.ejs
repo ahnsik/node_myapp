@@ -83,7 +83,11 @@
                             <% if(items[i].wrdate == written_date) { %>
                                 작성자 : <input type='text' name='id' id='myid'> 암호 : <input type='text' name='pw' id='mypw'><br>
                                 날짜 : <input type='date' name='wrdate' id='date' value='<%= written_date %>'><br>
+<<<<<<< HEAD
                                 제목 : <input type='text' name='title' id='title' value='<%= items[i].title %>'><br>
+=======
+                                제목 : <input type='text' name='title' id='title'><br>
+>>>>>>> 701cb7e8375eb0c60fda5c17b512fd9452eab9d5
                                 <div class="editor-container">
                                     <div class="markd_view"><div id="markdown_view"></div></div>
                                     <div class="edit_area"><textarea name="diary_text" id="edit_input" oninput="marked_refresh();"><%= items[i].content %></textarea></div>
@@ -108,6 +112,7 @@
                     marked.parse(document.getElementById('edit_input').value);
 
                 //// 
+<<<<<<< HEAD
                 // edit_input.addEventListener("compositionstart", handleEvent);
                 // edit_input.addEventListener("compositionupdate", handleEvent);
                 // edit_input.addEventListener("compositionend", handleEvent);
@@ -120,6 +125,20 @@
             //     log_window.innerText = log_window.innerText + msg;
             // };
 
+=======
+                edit_input.addEventListener("compositionstart", handleEvent);
+                edit_input.addEventListener("compositionupdate", handleEvent);
+                edit_input.addEventListener("compositionend", handleEvent);
+            };
+            function handleEvent(event) {
+                log(event.data+`\n`);
+            };
+            function log(msg) {
+                var log_window = document.getElementById("log_output");
+                log_window.innerText = log_window.innerText + msg;
+            };
+            
+>>>>>>> 701cb7e8375eb0c60fda5c17b512fd9452eab9d5
         </script>
     </body>
 </html>

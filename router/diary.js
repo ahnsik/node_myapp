@@ -72,6 +72,10 @@ router.get('/about', function(req, res) {
 });
 // 새로운 일기 글쓰기.
 router.get('/write', function(req, res) {
+<<<<<<< HEAD
+=======
+  console.log('새로운 글쓰기 - routed.');
+>>>>>>> 701cb7e8375eb0c60fda5c17b512fd9452eab9d5
   var wrdate;
   if (req.query.wrdate != null) {
     wrdate = new Date(req.query.wrdate).toISOString().split('T')[0];
@@ -101,6 +105,20 @@ router.get('/delete', function(req, res) {
     console.log('[][][][] db(diary) error [][][][]\n', err);
     res.send("<p>(bp/list) 'Delete.. - wrdate = "+ req.query.wrdate+" was failed. Check DB again.</p>")
   });
+});
+
+// delete.
+router.get('/delete', function(req, res) {
+  const sql_String = "DELETE from diary where wrdate=" + req.query.wrdate;
+  console.log('Delete.. - wrdate = '+ req.query.wrdate);
+  // access_db(sql_String, {}, function(err, rows, fields) {   // if succeed
+    // res.render("diarywrite", { written_date: new Date().toISOString().split('T')[0], data: rows });
+    alert("DELETE this post ? : wrdate="+ req.query.wrdate);
+
+  // }, function(err, rows, fields) {    // if failed
+  //   console.log('[][][][] db(diary) error [][][][]\n', err);
+  //   // res.send("<p>(bp/list) 'Delete.. - wrdate = "+ req.query.wrdate+"</p>")
+  // });
 });
 
 router.post('/record', function(req, res) {
