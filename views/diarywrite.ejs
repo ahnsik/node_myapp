@@ -42,11 +42,14 @@
             .markd_view {
               flex: 1;
               background-color: lightblue;
+              min-width: 300px;
+              min-height: 100px;
               display: inline-block;
             }
             .edit_area{
               flex: 1;
-              min-height: 300px;
+              min-width: 300px;
+              min-height: 100px;
               background-color: lightslategray;
               display: inline-block;
             }
@@ -105,18 +108,18 @@
                     marked.parse(document.getElementById('edit_input').value);
 
                 //// 
-                edit_input.addEventListener("compositionstart", handleEvent);
-                edit_input.addEventListener("compositionupdate", handleEvent);
-                edit_input.addEventListener("compositionend", handleEvent);
+                // edit_input.addEventListener("compositionstart", handleEvent);
+                // edit_input.addEventListener("compositionupdate", handleEvent);
+                // edit_input.addEventListener("compositionend", handleEvent);
             };
-            function handleEvent(event) {
-                log(event.data+`\n`);
-            };
-            function log(msg) {
-                var log_window = document.getElementById("log_output");
-                log_window.innerText = log_window.innerText + msg;
-            };
-            
+            // function handleEvent(event) {
+            //     log(event.data+`\n`);
+            // };
+            // function log(msg) {
+            //     var log_window = document.getElementById("log_output");
+            //     log_window.innerText = log_window.innerText + msg;
+            // };
+
         </script>
     </body>
 </html>
