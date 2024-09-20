@@ -68,10 +68,9 @@
   }
 
   /* contents */
-  #content-wrap {
+  #content {
     background-color: rgb(237, 255, 237);
-    /* display: block; */
-    width: 160%;
+    width: 100%;
   }
   aside {
     background-color: #444;
