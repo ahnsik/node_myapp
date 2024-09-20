@@ -6,6 +6,7 @@
     <title>내 게시판</title>
     <link rel="stylesheet" type="text/css" href="./css/all_fonts.css" />
     <link rel="stylesheet" type="text/css" href="./css/ccash_style.css" />
+    <link rel="stylesheet" type="text/css" href="./css/ccash_style_mobile.css" />
 </head>
 <body>
   <div id="wrap">
@@ -33,12 +34,11 @@
       <% for(i = 0; i < data.length; i++) { %>
         <article id=<%- data[i].title.replaceAll(' ', '_'); %>>
         <h2><%- data[i].title %></h2>
-        <span class="date_written"><%- data[i].wrdate %></span>
-        <!-- <span class="btn" id="edit" onclick="edit_post('<%- data[i].wrdate %>');">edit</span>
-        <span class="btn" id="delete" onclick="delete_post('<%- data[i].wrdate %>');">delete</span> -->
-        <span class="btn" id="edit"><a href="diary/write?wrdate=<%- data[i].wrdate %>">✏️</a></span> 
-        <!-- <span class="btn" id="delete" onclick="make_confirm();"><a href="diary/delete?wrdate=<%- data[i].wrdate %>">delete</a></span> -->
-        <span class="btn" id="delete" onclick="make_confirm('<%- data[i].wrdate %>');">❌</span>
+        <p class="control_block">
+          <span class="date_written"><%- data[i].wrdate %></span>
+          <span class="btn" id="edit"><a href="diary/write?wrdate=<%- data[i].wrdate %>">✏️</a></span> 
+          <span class="btn" id="delete" onclick="make_confirm('<%- data[i].wrdate %>');">❌</span>
+        </p>
         <p><%- data[i].content %></p>
         </article>
       <% } %>

@@ -1,5 +1,5 @@
 module.exports = {
-  host      : 'ccash2.gonetis.com',
+  host      : 'ccash.iptime.org',
   port	    : 3306,
   user      : 'ahnsik',
   password  : 'Ahnsik7@!',
