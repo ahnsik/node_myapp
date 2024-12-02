@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <link rel="shortcut icon" href="./favicon.ico">
+  <meta charset="UTF-8" lang="kr">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <meta name="viewport" content="user-scalable=no, width=device-width, initial-scale=1">
+  <link rel="stylesheet" type="text/css" href="./css/japanese_dialog_style.css" />
+</head>
+
+<body>
+  <div id="wrap">
+
+    <div id="content-wrap">
+      <aside>
+        <h2><img src="travel_japanese_icon.webp" width="60" height="60"> 여행을 위한 간단 일본어 회화</h2>
+
+        <ol id="chapter">
+        </ol>
+      </aside>
+      <hr>
+      <section id="contents">
+
+<% for(i = 0; i < data.length; i++) { %>
+  <%- data[i].content %>
+<% } %>
+
+      </section>
+
+
+<script>    /* 목록 자동 만들기 */
+  window.onload = function main() {
+    let dom_chapter = document.getElementById("chapter");
+    let articles = document.getElementsByTagName("article");
+    for (var i=0; i<articles.length; i++) {
+      // let dom_zh = articles[i].getElementsByClassName("zh");
+      let subject = articles[i].getElementsByClassName("a_title");
+      // let subject_kr = articles[i].getElementsByClassName("kr");
+      // console.log("i="+i+", " + subject[0].innerHTML + " : " + subject_kr[0].innerHTML );
+      let new_chaper = document.createElement("li");
+      new_chaper.innerHTML = "<a href='#"+articles[i].id.trim()+"'>"+articles[i].id.trim()+"  <span class='jp'>"+subject[0].innerHTML+"</span> </a>";
+      dom_chapter.append(new_chaper);
+    }
+  }
+</script>
+
+</body>
+</html>
+

@@ -82,7 +82,6 @@ router.get('/write', function(req, res) {
 
   const sql_String = "SELECT wrdate,title,content from diary order by wrdate desc";
   access_db(sql_String, {}, function(err, rows, fields) {   // if succeed
-    // console.log('parameters - rows = '+rows+', fields='+ fields);
     res.render("diarywrite", { written_date: wrdate, items: rows, data: fields });
   }, function(err, rows, fields) {    // if failed
     console.log('[][][][] db(diary) error [][][][]\n', err);

@@ -4,7 +4,7 @@
 /*      192 DPI 미만의 일반 해상도 기기 대응 */
 /* ======================================= */
 
-@media (max-resolution: 191dpi) {     /* @media ( min-width: 841px ) {  --- Size 로 구분할 때엔, */
+@media (max-resolution: 239dpi) {     /* @media ( min-width: 841px ) {  --- Size 로 구분할 때엔, */
   /* 보통 해상도 - PC브라우저 용 - 191 dpi 까지. */
   * {
     margin: 0; padding: 0;
@@ -61,6 +61,8 @@
     line-height: 60px;
     padding: 0 20px;
     color: rgba(0, 0, 0, 0.4);
+    text-decoration: none; 
+    text-decoration-line: none;
   }
   .nav-items > li > a:hover {
     color: rgba(0, 0, 0, 0.8);
@@ -120,7 +122,11 @@
     background-color: white;
     margin-left: 245px;
     /* font-family: 'NEXON Lv2 Gothic', Arial, Helvetica, sans-serif; */
+    overflow: auto;
   }
+  article li { list-style:square }
+  article ol li { list-style: decimal }
+
   article .control_block {
     text-align: right;
   }

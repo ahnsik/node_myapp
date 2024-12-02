@@ -369,8 +369,9 @@
 
     var readFromDB = () => {
         let edit_text = document.getElementById('edit_area');
-        let index = document.getElementById('db_index').value;
-        let url = 'http://ccash2.gonetis.com:8088/chinese_dialog/read?number='+index;
+        let index = document.getElementByI
+        d('db_index').value;
+        let url = 'http://ccash.iptime.org:8088/chinese_dialog/read?number='+index;
 
         ////  nodemyapp - chinese_dialog API 호출
         var xmlhttp = new XMLHttpRequest();
@@ -386,7 +387,7 @@
     }
     var deleteFromDB = () => {
         let index = document.getElementById('db_index').value;
-        let url = 'http://ccash2.gonetis.com:8088/chinese_dialog/delete?number='+index;
+        let url = 'http://ccash.iptime.org:8088/chinese_dialog/delete?number='+index;
     }
     var updateDB = () => {
 

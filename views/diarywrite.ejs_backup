@@ -93,10 +93,10 @@
                         <% if( i >= items.length ) { %> 
                             작성자 : <input type='text' name='id' id='myid'> 암호 : <input type='text' name='pw' id='mypw'><br>
                             날짜 : <input type='date' name='wrdate' id='date' value='<%= written_date %>'> <br>
-                            제목 : <input type='text' name='title' id='title' value=''> <br>
+                            제목 : <input type='text' name='title' id='title' value='new...'> <br>
                             <div class="editor-container">
                                 <div class="markd_view"><div id="markdown_view"></div></div>
-                                <div class="edit_area"><textarea name="diary_text" id="edit_input" oninput="marked_refresh();"></textarea></div>
+                                <div class="edit_area"><textarea name="diary_text" id="edit_input" oninput="marked_refresh();"> NEW... </textarea></div>
                             </div>
                         <% } %>
                         <button type='submit' onclick="save_cookie();">기록</button>

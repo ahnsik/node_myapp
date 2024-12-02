@@ -4,7 +4,7 @@
 /*      192 DPI 이상의 초고해상도 기기 대응      */
 /* =========================================== */
 
-@media (min-resolution: 192dpi) {
+@media (min-resolution: 240dpi) {
   /* 모바일 브라우저 용 - 해상도에 따라, 고해상도 모바일 디바이스에 대응. */
   * {
     margin: 0; padding: 0;
@@ -16,6 +16,7 @@
     background-color: #f0f3f4;
     -webkit-font-smoothing: antialiased;
     -webkit-text-size-adjus: 100%;  /* iphone font size 변경 방지 */
+    overflow: auto;
   }
   /* Simple Reset CSS */
   li { list-style: none; }
@@ -62,6 +63,8 @@
     /* line-height: 40px; */
     padding: 0 10px;
     color: rgba(0, 0, 0, 0.4);
+    text-decoration: none; 
+    text-decoration-line: none;
   }
   .nav-items > li > a:hover {
     color: rgba(0, 0, 0, 0.8);
@@ -82,6 +85,7 @@
     padding: 20px;
     background-color: white;
     font-size: 1.4em;
+    overflow: auto;
   }
   article h2 {
     font-size: 1.8em;
@@ -99,6 +103,7 @@
     background-color: rgb(230, 222, 207);
     padding: 20px 20px;
     font-size: 2.0em;
+    overflow: auto;
   }
   article .btn {
     /* float: right; */

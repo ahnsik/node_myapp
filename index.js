@@ -67,6 +67,7 @@ app.use('/money', require('./router/moneybook') );
 app.use('/bp', require('./router/bp_diary') );
 app.use('/diary', require('./router/diary') );
 app.use('/chinese_dialog', require('./router/chinese_dialog') );
+app.use('/travel_japanese_dialog', require('./router/travel_japanese_dialog') );
 
 
 // app.get('/list', function (req, res) {

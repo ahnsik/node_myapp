@@ -1,0 +1,337 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<!--    레이아웃을 만드는 Flex 와 Grid 기능에 대해서,  아래의 링크들을 참조해 볼 것. !!
+ FLEX : https://studiomeal.com/archives/197
+
+ GRID : https://studiomeal.com/archives/533 
+-->
+
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Split Text Editors</title>
+    <link rel="stylesheet" type="text/css" href="../css/japanese_dialog_style.css" />
+    
+</head>
+
+<body>
+
+    <h1>여행 일본어 회화 입력하기.</h1>
+    DB index: <input id="db_index" type="number"/><button id="readBtn" onclick="readFromDB();">READ</button><button id="deleteBtn" onclick="deleteFromDB();">DELETE</button><span class="spacer">  </span><button id="updateBtn" onclick="updateDB();">UPDATE</button>
+    <p>편집 방법 : <br/>
+    <ul>
+        <li><b>제목 : </b> # 하나로 입력  ex) #입국신고 </li>
+        <li><b>상황 : </b> ## 두 개로 입력  ex) ##空港、入国審査 공항 입국신고</li>
+        <li><b>상황 : </b> * 로 감싸면 BOLD체 ex) 공항에서 *입국신고*, 출입국 관리소</li>
+        <hr>
+        <li><b>일본어 : </b> @ 하나면 일본어 문장 ex) @ 入国目的は何ですか？ </li>
+        <li><b>발음 : </b> @@ 둘이면 발음 ex) @@ 뉴우코쿠 모꾸떼끼와 난 데스까? </li>
+        <li><b>번역 : </b> @@@ 셋이면 한국어 의미 ex) @@@ 입국 목적은 무엇입니까? </li>
+        <li><b>단어구분 : </b> 한국어, 일본어 공통으로 대괄호 [ ] 로 감싸면 바꿔 볼 수 있는 단어 ex) [旅行]です。</li>
+        <hr>
+        <li><b>패턴-일본어 : </b> + 하나면 패턴의 일본어 문장 ex) +～は～ですか？ </li>
+        <li><b>패턴-발음 : </b> ++ 둘이면 패턴문장의 발음 ex) ++～와～데스까？ </li>
+        <li><b>패턴-번역 : </b> +++ 셋이면 패턴문장의 한국어 의미 ex) +++～는～입니까？ </li>
+        <hr>
+        <li><b>바꿔보기-일본어 : </b> - 하나면 바뀌는 일본어 단어, 괄호 속에 발음과 뜻을 컴마로 구분  ex) -入国目的(뉴우코쿠모쿠테끼, 입국목적) </li>
+        <li><b>바꿔볼 단어 : </b> -> 화살표로 바꿔볼 다른 단어, 괄호속에 발음과 뜻을 컴마로 구분 ex) ->訪問目的(호오몽모쿠테키, 방문목적) </li>
+    </ul>
+
+    <p>편집 예제 : 
+        <pre>
+#입국신고
+##入国審査 입국심사
+###*空港、入国審査 공항 입국신고*입국심사, 출입국관리
+@[入国目的]は[何]ですか？
+@@[뉴우코쿠 모꾸떼끼]와 [난] 데스까?
+@@@[입국 목적]은 [무엇]입니까?
+@[旅行]です。
+@@[료코오]데스
+@@@[여행]입니다.
++～は～ですか？
+++～와～데스까？
++++～는～입니까？
++～です
+++～데스
++++～입니다
+-入国目的(뉴우코쿠모쿠테끼, 입국목적)
+->訪問目的(호오몽모쿠테키, 방문목적)
+-旅行(료꼬오, 여행)
+->出張(슛쵸오, 출장)
+->親戚訪問(신세키호오몽, 친척방문)            
+        </pre>
+    </p>
+
+    <form action='/travel_japanese_dialog/new_post' method='post'>
+    <div class="editor">
+        <div class="editor-container">
+            <div class="editarea non-editable" id="markdown_view-container">
+                <div contenteditable="false" id="markdown_view">
+                    <!-- Your content for the first editor goes here (non-editable) -->
+                    This is not editable.
+                </div>
+            </div>
+            <div class="editarea" id="edit_area-container">
+                <!-- <div contenteditable="true" id="edit_area" oninput="marked_refresh();"> -->
+                    <!-- Your content for the second editor goes here (editable) -->
+                <!-- </div> -->
+                <textarea id="edit_area" name="dlg_text" oninput="marked_refresh();"></textarea>
+            </div>
+        </div>
+    </div>
+    <input type="submit" class="submit" name="action" value="APPEND to DB"/>
+    <h5>tail block here.</h5>
+    </form>
+
+
+    <script>    /* 목록 자동 만들기 */
+    window.onload = function main() {
+    }
+    </script>
+
+    <script>
+    const isEmpty = (str) => (!str?.length);
+    var mode = "none";
+    
+    var marked_refresh = () => {
+        var html_text = "";
+        var origin_text = document.getElementById('edit_area').value;
+
+        var lines = origin_text.split('\n');
+        let lineNum = 0;
+
+        // 입력된 일반 TEXT를 parsing 해서 HTML형태로 만들어 줌.
+        while(lineNum<lines.length) {
+            if ( ! isEmpty(lines[lineNum]) ) {       // 빈 문자열 이면 skip.
+                let string_to_parse = pre_process_text_word( pre_process_text_bold( lines[lineNum] ) );
+                console.log("lineNum=",lineNum, "lines[lineNum]=", string_to_parse );
+                switch(  string_to_parse.charAt(0) ) {
+                    case '#':   //   a_header 클래스의 디비전을 파싱. 
+                        html_text +=_change_mode("a_header");
+                        console.log("[ a_header ]=", string_to_parse);
+                        html_text += parse_header( string_to_parse );
+                        break;
+                    case "@":   //   dialog 클래스의 디비전을 파싱. 
+                        html_text += _change_mode("dialog");
+                        console.log("[ dialog ]=", string_to_parse);
+                        html_text += parse_dialogs( string_to_parse );
+                        break;
+                    case "+":   //   pattern 클래스의 디비전을 파싱. 
+                        html_text += _change_mode("pattern");
+                        console.log("[ pattern ]=", string_to_parse);
+                        html_text += parse_patterns( string_to_parse );
+                        break;
+                    case "-":   //   change 클래스의 디비전을 파싱. 
+                        html_text += _change_mode("change");
+                        console.log("[ change_words ]=", string_to_parse );
+                        html_text += parse_changing_words( string_to_parse );
+                        break;
+                    default:
+                        console.log("[ Unknown. ]=", string_to_parse);
+                        break;
+                }
+            }
+            lineNum++;
+        }
+        // 맨 마지막엔 TAG 들을 닫는다. 
+        html_text += '\n</article>\n';
+        document.getElementById('markdown_view').innerHTML = html_text;
+        console.log("=====================");
+        console.log(html_text);
+    };
+
+
+    // BOLD 체 등을 처리하기 위해서,  * ~ * 로 감싸진 부분은 먼저 처리하도록 한다. 
+    var pre_process_text_bold = (text) => {  
+        var len = text.length;
+        var i = 0;
+        var new_text = "", ch = "";
+        var ok_flag=true;
+        for (i=0; i<len; i++) {
+            ch = text.charAt(i);
+            if (ch=='*') {
+                if (ok_flag) {
+                    new_text += "<b>";
+                    ok_flag = false;
+                } else {
+                    new_text += "</b>";
+                    ok_flag = true;
+                }
+            } else {
+                new_text += ch;
+            }
+        }
+        if (ok_flag) {      // <b> - </b> 의 짝이 잘 맞으면 바뀐 TEXT를, 짝이 맞지 않으면 원본 문장을 리턴.
+            return new_text;
+        } else {
+            return text;
+        }
+    }
+    var pre_process_text_word = (text) => {  
+        let len = text.length;
+        let i = 0;
+        let new_text = "", ch = "";
+        let ok_flag=true;
+        for (i=0; i<len; i++) {
+            ch = text.charAt(i);
+            if (ch=='[') {
+                new_text += '<span class="word">';
+                ok_flag = false;
+            } else if (ch==']') {
+                if (ok_flag==true) {        // 예상치 못한 단어 close 면 그냥 원본 문장을 리턴.
+                    return text;
+                } else {
+                    new_text += '</span>';
+                    ok_flag = true;
+                }
+            } else {
+                new_text += ch;
+            }
+        }
+        if (ok_flag) {      // <b> - </b> 의 짝이 잘 맞으면 바뀐 TEXT를, 짝이 맞지 않으면 원본 문장을 리턴.
+            return new_text;
+        } else {
+            return text;
+        }
+    }
+
+    _change_mode = (new_mode) => {
+        let ret_string = "";
+        if (mode != new_mode) {         // mode 가 변경될 때에만 
+            switch(new_mode) {  // 새로운 모드가 
+                case "a_header":
+                    console.log(" new mode = a_header");
+                    // ret_string = '<p class="a_header">\n';
+                    break;
+                case "dialog":  
+                    console.log(" new mode = dialog");
+                    ret_string = '<div class="dialog">\n';
+                    break;
+                case "pattern": 
+                    console.log(" new mode = patterns");
+                    // TODO: </div> 는 이전 모드 mode 값이 dialog 일 때에만 하도록 하면 어떨까? 
+                    ret_string = '</div>\n<div class="pattern">\n<p><b>패턴</b> :\n';
+                    break;
+                case "change":  
+                    console.log(" new mode = change");
+                    // TODO: </div> 는 이전 모드 mode 값이 dialog 일 때에만 하도록 하면 어떨까? 
+                    ret_string = '</div>\n<div class="change">\n<p><b>단어 바꿔보기</b> :\n';
+                    break;
+                default:        // 몰라. 아무것도 안한다.
+                    break;
+            }
+        }
+        // console.log(" mode not changed");
+        mode = new_mode;
+        return ret_string;      // 변경 없음. 아무것도 추가하지 않음.
+    }
+
+    
+    var parse_header = (text) => {
+        let html_out="";
+        if (text.charAt(1) == '#') { // situdation paragraph
+            if (text.charAt(2) == '#') { // situdation comments
+                html_out += ' <div class="a_header"><p class="situation">' + text.substring(3) + '</p>\n </div>\n';
+            } else {
+                html_out += ' <H1 class="a_title">' + text.substring(2) + '</H1>\n';
+            }
+        } else {
+            html_out = '<article id="' + text.substring(1) + '">';
+        }
+        return html_out;
+    }
+
+    var parse_dialogs = (text) => {
+        let html_out="";
+        if (text.charAt(1) == '@') { // 
+            if (text.charAt(2) == '@') { // situdation comments
+                html_out += '  <p class="kr">' + text.substring(3) + '</p>\n';
+            } else {
+                html_out += '    <span class="pronounce">' + text.substring(2) + '</span></p>\n';
+            }
+        } else {
+            html_out = '  <p class="jp">' + text.substring(1) + '<br/>\n';
+        }
+        return html_out;
+    }
+
+    var parse_patterns = (text) => {
+        let html_out="";
+        if (text.charAt(1) == '+') { // 
+            if (text.charAt(2) == '+') { // situdation comments
+                html_out += '<br/>' + text.substring(3) + '</p>\n';
+            } else {
+                html_out += '<br/>' + text.substring(2);
+            }
+        } else {
+            html_out = '<p>' + text.substring(1);
+        }
+        return html_out;
+    }
+
+    var parse_changing_words = (text) => {
+        let html_out="";
+        if (text.charAt(1) == '>') { // 
+            html_out += '\n → ' + text.substring(2) + '<br/>';
+        } else {
+            html_out = '<br/>[ ' + text.substring(1) + ' ]<br/>';
+        }
+        return html_out;
+    }
+
+    var readFromDB = () => {
+        let edit_text = document.getElementById('edit_area');
+        let index = document.getElementById('db_index').value;
+        // let url = 'http://ccash.iptime.org:8088/travel_japannese_dialog/read?number='+index;
+        let url = './read?number='+index;
+
+        ////  nodemyapp - travel_japannese_dialog API 호출
+        var xmlhttp = new XMLHttpRequest();
+        xmlhttp.onreadystatechange = function() {
+            if (this.readyState == 4 && this.status == 200) {
+                edit_text.value = this.responseText;
+            } else {
+                edit_text.value = "";
+            }
+        };
+        xmlhttp.open("GET", url, true);
+        xmlhttp.send();
+    }
+    var deleteFromDB = () => {
+        let index = document.getElementById('db_index').value;
+        // let url = 'http://ccash.iptime.org:8088/travel_japannese_dialog/delete?number='+index;
+        let url = './delete?number='+index;
+    }
+    var updateDB = () => {
+
+    }
+ 
+</script>
+</body>
+</html>
+
+
+<!-- 
+#입국신고
+##入国審査 입국심사
+###*空港、入国審査 공항 입국신고*입국심사, 출입국관리
+@[入国目的]は[何]ですか？
+@@[뉴우코쿠 모꾸떼끼]와 [난] 데스까?
+@@@[입국 목적]은 [무엇]입니까?
+@[旅行]です。
+@@[료코오]데스
+@@@[여행]입니다.
++～は～ですか？
+++～와～데스까？
++++～는～입니까？
++～です
+++～데스
++++～입니다
+-入国目的(뉴우코쿠모쿠테끼, 입국목적)
+->訪問目的(호오몽모쿠테키, 방문목적)
+-旅行(료꼬오, 여행)
+->出張(슛쵸오, 출장)
+->親戚訪問(신세키호오몽, 친척방문)             
+-->
