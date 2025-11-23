@@ -7,6 +7,7 @@
     <link rel="stylesheet" type="text/css" href="./css/all_fonts.css" />
     <link rel="stylesheet" type="text/css" href="./css/ccash_style.css" />
     <link rel="stylesheet" type="text/css" href="./css/ccash_style_mobile.css" />
+    <!-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/github-markdown-css/5.2.0/github-markdown-light.min.css"> -->
 </head>
 <body>
   <div id="wrap">
@@ -32,7 +33,7 @@
             <span style="display:none;"> you can USE these Icons for EDIT button. ✍🏼✏️🛠️🖍️✒️🖋️🪚</span>
             <span style="display:none;"> you can USE these Icons for DELETE button. 🚮❌🗑️</span>
       <% for(i = 0; i < data.length; i++) { %>
-        <article id=<%- data[i].title.replaceAll(' ', '_'); %>>
+        <article id=<%- data[i].title.replaceAll(' ', '_'); %> class="markdown-body">
         <h2><%- data[i].title %></h2>
         <p class="control_block">
           <span class="date_written"><%- data[i].wrdate %></span>
