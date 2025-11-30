@@ -1,8 +1,95 @@
-* {
-  padding: 0;
-  background-color: #565;
+/* Reset & base */
+*, *::before, *::after { box-sizing: border-box; }
+html, body { height: 100%; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial; }
+body {
+  margin: 0;
+  background: #fff; /* neutral background for readability */
+  color: #222;
+  font-size: 14px;
+  line-height: 1.4;
+  -webkit-font-smoothing: antialiased;
 }
 
-#accum_distance,#write_date,#gasoline_litter,#lpg_litter,#gasoline_litter,#price,#maintenance_memo {
-  width: "300px"
+/* Page container */
+.page-container {
+  width: 100%;
+  max-width: 980px;
+  margin: 2px auto;
+  padding: 2px;
 }
+
+/* Headings */
+h3 { font-size: 1.02rem; margin: 2px 0 6px; }
+
+/* Table container for horizontal scrolling on small screens */
+.table-wrapper { overflow-x: auto; -webkit-overflow-scrolling: touch; }
+.responsive-table { width: 100%; border-collapse: collapse; min-width: 620px; table-layout: fixed; }
+.responsive-table thead th { background: #f1f1f1; text-align: left; padding: 5px 6px; font-weight: 600; border-bottom: 2px solid #ddd; }
+.responsive-table td, .responsive-table th { padding: 4px 6px; border-bottom: 1px solid #eee; word-break: break-word; }
+.responsive-table tbody tr { background: #fff; }
+
+/* Small devices: keep table layout but compact it for better comparison */
+@media (max-width: 720px) {
+  .responsive-table { font-size: 10.5px; min-width: 760px; }
+  .responsive-table td, .responsive-table th { padding: 3px 5px; }
+  .responsive-table td, .responsive-table th { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .responsive-table th { position: sticky; top: 0; background: #fff; z-index: 2; }
+}
+
+/* Compact table: assign reasonable column widths so more columns are visible */
+.responsive-table th:nth-child(1), .responsive-table td:nth-child(1) { width: 42px; }
+.responsive-table th:nth-child(2), .responsive-table td:nth-child(2) { width: 72px; }
+.responsive-table th:nth-child(3), .responsive-table td:nth-child(3) { width: 100px; min-width: 120px; }
+.responsive-table th:nth-child(4), .responsive-table td:nth-child(4) { width: 72px; }
+.responsive-table th:nth-child(5), .responsive-table td:nth-child(5) { width: 72px; }
+.responsive-table th:nth-child(6), .responsive-table td:nth-child(6) { width: 82px; }
+.responsive-table th:nth-child(7), .responsive-table td:nth-child(7) { width: 82px; }
+.responsive-table th:nth-child(8), .responsive-table td:nth-child(8) { width: 82px; }
+
+/* Computed-result columns (visually separated): 주행거리, 연비(1천원), 연비(리터당), 단가 */
+.responsive-table th:nth-child(5), .responsive-table td:nth-child(5),
+.responsive-table th:nth-child(6), .responsive-table td:nth-child(6),
+.responsive-table th:nth-child(7), .responsive-table td:nth-child(7),
+.responsive-table th:nth-child(8), .responsive-table td:nth-child(8) {
+  background: #f6f7f9; /* light gray to indicate computed values */
+}
+
+/* Add subtle separator to help identify computed columns (non-sticky columns) */
+.responsive-table th:nth-child(5), .responsive-table td:nth-child(5) { border-left: 1px solid rgba(0,0,0,0.06); }
+.responsive-table th:nth-child(6), .responsive-table td:nth-child(6),
+.responsive-table th:nth-child(7), .responsive-table td:nth-child(7),
+.responsive-table th:nth-child(8), .responsive-table td:nth-child(8) { border-left: 1px solid rgba(0,0,0,0.04); }
+
+/* Allow the third column (memo) to wrap if needed but truncate visually; allow long numbers to stay on one line */
+.responsive-table td:nth-child(3) { white-space: normal; }
+
+/* Sticky left columns: date & distance */
+.responsive-table th.col-date, .responsive-table td.col-date { position: sticky; left: 0; z-index: 6; background: #fff; padding-left: 1px; padding-right: 1px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.responsive-table th.col-date { box-shadow: 2px 0 6px rgba(0,0,0,0.04); }
+.responsive-table th.col-date, .responsive-table td.col-date { text-align: center; }
+.responsive-table th.col-distance, .responsive-table td.col-distance { position: sticky; left: 36px; z-index: 5; background: #fff; padding-right: 2px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+
+/* align numeric columns to the right for compactness */
+.responsive-table td:nth-child(2),
+.responsive-table td:nth-child(4),
+.responsive-table td:nth-child(5),
+.responsive-table td:nth-child(6),
+.responsive-table td:nth-child(7),
+.responsive-table td:nth-child(8) { text-align: right; padding-right: 8px; padding-left: 8px; }
+.responsive-table th.col-distance { box-shadow: 2px 0 6px rgba(0,0,0,0.04); }
+.responsive-table th.col-distance, .responsive-table td.col-distance { text-align: center; }
+
+/* Slight style for form elements used in new_car_history.ejs */
+input[type="text"], input[type="number"], input[type="date"], textarea {
+  width: 100%; max-width: 380px; padding: 8px; border: 1px solid #ccc; border-radius: 4px;
+}
+ul { list-style: none; padding: 0; margin: 0; }
+li { margin-bottom: 8px; }
+
+/* Buttons */
+.submit { background: #3b82f6; color: #fff; padding: 8px 10px; border: none; border-radius: 4px; cursor: pointer; }
+.submit:hover { background: #2563eb; }
+
+/* IDs used in existing forms */
+#accum_distance, #write_date, #gasoline_litter, #lpg_litter, #price, #maintenance_memo { width: 100%; max-width: 420px; }
+

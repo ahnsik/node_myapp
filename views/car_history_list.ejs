@@ -2,55 +2,76 @@
 <html lang="kr" dir="ltr">
   <head>
     <meta charset="utf-8">
-    <meta name="viewport" content="user-scalable=no, width=device-width" />
-    <link rel="stylesheet" type="text/css" href="carstyle.css" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="stylesheet" type="text/css" href="/css/carstyle.css" />
     <title>차계부 - 기록 목록</title>
     <style type="text/css">
-      * {
-        margin: 0;
-        font-size: 12px;
-      }
-      table {
-        border-collapse: collapse;
-      }
+      /* small inline fallback styles for browsers that don't load CSS; main styles live in /css/carstyle.css */
+      table { border-collapse: collapse; }
     </style>
   </head>
   <body>
-      <H3>최근 입력된 데이터 기록을 보여줌.</H3>
-
-      <table border='1px'>
+      <div class="page-container">
+        <h3>최근 입력된 데이터 기록을 보여줌.</h3>
+        <div style="margin-bottom:4px; font-size:0.9rem; display:flex; gap:8px; align-items:center;">
+          <label for="rowLimit">표시 행 수:</label>
+          <select id="rowLimit">
+            <option value="10" <%= (limit==10) ? 'selected' : '' %>>10</option>
+            <option value="15" <%= (limit==15) ? 'selected' : '' %>>15</option>
+            <option value="25" <%= (limit==25) ? 'selected' : '' %>>25</option>
+            <option value="50" <%= (limit==50) ? 'selected' : '' %>>50</option>
+            <option value="100" <%= (limit==100) ? 'selected' : '' %>>100</option>
+          </select>
+        </div>
+        <div class="table-wrapper">
+      <table class="responsive-table" role="table">
           <!-- <colgroup>
               <col width='60'><col width='80'><col width='200'><col width='100'>
           </colgroup> -->
           <thead>
-              <tr>
-                  <th>날짜</th>
-                  <th>누적주행거리</th>
+                <tr>
+                  <th class="col-date">날짜</th>
+                  <th class="col-distance">누적주행거리</th>
                   <th>주유/정비내역</th>
                   <th>금액</th>
                   <th>주행거리</th>
-                  <th>연비(1천원)</th>
-                  <th>연비(리터당)</th>
-                  <th>단가(1리터당)</th>
+                  <th>연비 (1천원)</th>
+                  <th>연비 (리터당)</th>
+                  <th>단가 (1리터당)</th>
               </tr>
           </thead>
           <tbody>
               <% for(i = 0; i < list.length; i++) { %>
                <tr>
-                <td><%=list[i].wrdate.substring(2,10) %> </td>
-                <td><%=list[i].distance %> km</td>
-                <td><%=list[i].memo %></td>
-                <td><%=list[i].price %> 원</td>
+                <td data-label="날짜" class="col-date"><%=list[i].wrdate.substring(2,10) %></td>
+                <td data-label="누적주행거리" class="col-distance"><%=list[i].distance %> km</td>
+                <td data-label="주유/정비내역"><%=list[i].memo %></td>
+                <td data-label="금액"><%=list[i].price %> 원</td>
                 <% if (i < (list.length-1) ) { %>
-                  <td><%=list[i].distance-list[i+1].distance %> km</td>
-                  <td><%=parseInt( ((list[i].distance-list[i+1].distance)*100000 )/(list[i].price)) / 100.0 %> km/천원</td>
-                  <td><%=parseInt( ((list[i].distance-list[i+1].distance)*100)/(list[i].lpg+list[i].gasoline) ) / 100.0 %> km/ℓ</td>
-                  <td><%=parseInt( list[i].price / (list[i].lpg+list[i].gasoline) ) %> 원/ℓ</td>
+                  <td data-label="주행거리"><%=list[i].distance-list[i+1].distance %> km</td>
+                  <td data-label="연비 (1천원)"><%=parseInt( ((list[i].distance-list[i+1].distance)*100000 )/(list[i].price)) / 100.0 %> km/천원</td>
+                  <td data-label="연비 (리터당)"><%=parseInt( ((list[i].distance-list[i+1].distance)*100)/(list[i].lpg+list[i].gasoline) ) / 100.0 %> km/ℓ</td>
+                  <td data-label="단가 (1리터당)"><%=parseInt( list[i].price / (list[i].lpg+list[i].gasoline) ) %> 원/ℓ</td>
+                <% } else { %>
+                  <td data-label="주행거리">-</td>
+                  <td data-label="연비 (1천원)">-</td>
+                  <td data-label="연비 (리터당)">-</td>
+                  <td data-label="단가 (1리터당)">-</td>
                 <% } %>
               </tr>
               <% } %>
-          </tbody>
-      </table boader='1'>
+              </tbody>
+            </table>
+      </div> <!-- .table-wrapper -->
+      </div> <!-- .page-container -->
+      <script>
+        document.getElementById('rowLimit').addEventListener('change', function(e){
+          var val = e.target.value;
+          var url = new URL(window.location.href);
+          url.searchParams.set('limit', val);
+          window.location.href = url.toString();
+        });
+      </script>
 
   </body>
 </html>

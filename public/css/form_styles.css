@@ -1,0 +1,39 @@
+/* Form styles for new_car_history.ejs - keep inputs full width without changing carstyle.css */
+.car-form { font-size: 1.5em; line-height: 1.3; }
+.car-form ul { list-style: none; padding: 0; margin: 0; }
+.car-form li { display: flex; flex-direction: column; gap: 4px; margin-bottom: 8px; align-items: stretch; }
+.car-form label { display: block; font-weight: 600; font-size: inherit; color: #333; }
+.car-form input[type="text"], .car-form input[type="number"], .car-form input[type="date"], .car-form textarea, .car-form select {
+  width: 100%;
+  max-width: none;
+  box-sizing: border-box;
+  padding: 8px 8px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-size: inherit; /* inherit from .car-form (1.5x) */
+}
+
+/* Make submit button full width and match style in carstyle.css */
+.car-form input[type="submit"], .car-form .submit {
+  width: 100%;
+  box-sizing: border-box;
+  font-size: inherit;
+  padding: 10px 12px; /* slightly larger clickable area */
+}
+
+/* Small screens: reduce spacing further */
+@media (max-width: 480px) {
+  .car-form { font-size: 1.5em; }
+  .car-form input[type="text"], .car-form input[type="number"], .car-form input[type="date"], .car-form textarea, .car-form select { padding: 6px 6px; }
+}
+
+/* Pair fields (optional) - allow two columns for certain entries if needed */
+.car-form .two-up { display: grid; grid-template-columns: calc(50% - 6px) calc(50% - 6px); gap: 12px; width: 100%; }
+.car-form .field { display:flex; flex-direction:column; }
+@media (max-width: 360px) {
+  /* very narrow screens stack the two-up fields */
+  .car-form .two-up { grid-template-columns: 1fr; }
+}
+
+/* Ensure fields inside two-up actually fill their column */
+.car-form .two-up .field input, .car-form .two-up .field textarea { width: 100%; }

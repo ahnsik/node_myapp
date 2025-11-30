@@ -114,12 +114,14 @@ router.post('/new_Af', function(req, res) {
 // list up record
 router.get('/list', function(req, res) {
   console.log('list...\n');
-
-  var sql = 'SELECT * from health_diary order by date_written DESC limit 15';      //  DATE_FORMAT(wrdate, "%Y-%m-%d")
+  var limit = parseInt(req.query.limit, 10);
+  if(!limit || limit < 1) limit = 25;
+  if(limit > 100) limit = 100; // safety cap
+  var sql = 'SELECT * from health_diary order by date_written DESC limit ' + limit;      //  DATE_FORMAT(wrdate, "%Y-%m-%d")
   console.log('QUERY string...' + sql );
   access_db(sql, {}, function(err, rows, fields) {   // if succeed
     console.log('/bp/list.. QUERY result\n\terr=' + err+ '\n\trows=' + rows+ '\n\tfields=' + fields +'\n' );
-    res.render('bp_list', { list: rows } );
+    res.render('bp_list', { list: rows, limit: limit } );
   }, function(err, rows, fields) {    // if failed
     console.log('query returns err=' + err);
     res.send("<p>(bp/list) SELECT query FAIL... </p>")

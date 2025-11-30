@@ -2,25 +2,21 @@
 <html lang="kr" dir="ltr">
   <head>
     <meta charset="utf-8">
-    <meta name="viewport" content="user-scalable=no, width=device-width" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>New record - 차계부</title>
-    <style type="text/css" media="screen and (max-width):900px">
-    </style>
+    <!-- small inline fallback; main responsive layout is in /css/carstyle.css -->
     <style type="text/css">
-      * {
-        padding: 2;
-        margin: 6;
-        font-size: 18pt;
-        background-color: #CCF;
-      }
-      li {
-        width: 100px;
-      }
+      /* small inline fallback for this form only */
+      .car-form ul { padding: 0; margin: 0; }
+      .car-form li { margin-bottom: 8px; }
+      .car-form label { display:block; margin-bottom: 4px; font-weight: 600; }
     </style>
-    <!-- <link rel="stylesheet" type="text/css" href="css/carstyle.css" /> -->
+    <link rel="stylesheet" type="text/css" href="/css/carstyle.css" />
+    <link rel="stylesheet" type="text/css" href="/css/form_styles.css" />
   </head>
   <body>
-      <H3>차계부 새 정보 등록</H3>
+      <div class="page-container">
+      <h3>차계부 새 정보 등록</h3>
 
  <!-- +----------+---------------+------+-----+---------+-------+
       | Field    | Type          | Null | Key | Default | Extra |
@@ -30,20 +26,20 @@
       | memo     | varchar(2000) | YES  |     | NULL    |       |
       | price    | int(11)       | YES  |     | NULL    |       |
       +----------+---------------+------+-----+---------+-------+ -->
-      <form action='car_new_Af' method='post'>
+      <form class="car-form" action='car_new_Af' method='post'>
         <ul>
           <!-- <li><span id="date">2020-08-21</span> <span id="change_date" onclick="select_date">날짜변경</span> <span id="calendar" display="none"></span> </li> -->
-          <li>날짜<input placeholder="기록날짜" type="date" name="date" value="<%=new Date() %>" id="write_date"/> </li>
-          <li>거리<input placeholder="누적거리" type="number" name="accum_distance" id="accum_distance" /> </li>
-          <li>휘발유<input placeholder="휘발유" type="number" name="gasoline" step="0.001" id="gasoline_litter" /> </li>
-          <li>LPG <input placeholder="LPG" type="number" name="lpg" step="0.001" id="lpg_litter" /> </li>
-  				<li>금액<input placeholder="금액" type="number" name="price" id="price" /> </li>
-          <li>메모<textarea name="memo" rows="1" cols="18" id="maintenance_memo"></textarea> </li>
-  				<li><input type="submit" class="submit" name="action" value="기록저장" /> </li>
-  			</ul>
+          <li><label for="write_date">날짜</label><input placeholder="기록날짜" type="date" name="date" value="<%=new Date() %>" id="write_date"/> </li>
+          <li><label for="accum_distance">누적거리</label><input placeholder="누적거리" type="number" name="accum_distance" id="accum_distance" /> </li>
+          <li class="two-up"><div class="field"><label for="gasoline_litter">휘발유 (리터)</label><input placeholder="휘발유" type="number" name="gasoline" step="0.001" id="gasoline_litter" /></div><div class="field"><label for="lpg_litter">LPG (리터)</label><input placeholder="LPG" type="number" name="lpg" step="0.001" id="lpg_litter" /></div></li>
+          <li><label for="price">금액</label><input placeholder="금액" type="number" name="price" id="price" /> </li>
+          <li><label for="maintenance_memo">메모</label><textarea name="memo" rows="2" id="maintenance_memo"></textarea> </li>
+          <li><input type="submit" class="submit" name="action" value="기록저장" /> </li>
+        </ul>
         <hr>
         <a href="/car/list">과거 목록 보기</a>
       </form>
+      </div> <!-- .page-container -->
 
   </body>
 </html>

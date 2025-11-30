@@ -118,12 +118,15 @@ router.post('/car_new_Af', function(req, res) {
 // list up record
 router.get('/list', function(req, res) {
   // var sql = 'SELECT DATE_FORMAT(wrdate,"%Y-%m-%d"),distance,memo,price from maintenance limit 5';      //  DATE_FORMAT(wrdate, "%Y-%m-%d")
-  var sql = 'SELECT * from maintenance order by wrdate DESC limit 15';      //  DATE_FORMAT(wrdate, "%Y-%m-%d")
+  var limit = parseInt(req.query.limit, 10);
+  if(!limit || limit < 1) limit = 25;
+  if(limit > 100) limit = 100; // safety cap
+  var sql = 'SELECT * from maintenance order by wrdate DESC limit ' + limit;      //  DATE_FORMAT(wrdate, "%Y-%m-%d")
   console.log('QUERY string...' + sql );
 
   access_db(sql, {}, function(err, rows, fields) {   // if succeed
     console.log('QUERY result\n\terr=' + err+ '\n\trows=' + rows+ '\n\tfields=' + fields +'\n' );
-    res.render('car_history_list', { list: rows } );
+    res.render('car_history_list', { list: rows, limit: limit } );
   }, function(err, rows, fields) {                  // if failed
     console.log('query returns err=' + err);
     res.send("<p>SELECT query FAIL... </p>")
