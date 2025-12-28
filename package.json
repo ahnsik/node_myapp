@@ -23,9 +23,13 @@
   },
   "homepage": "https://github.com/ahnsik/node_myapp#readme",
   "dependencies": {
+    "body-parser": "^2.2.1",
     "ejs": "^3.1.5",
     "express": "^4.17.1",
+    "express-ejs-layouts": "^2.5.1",
     "marked": "^11.0.0",
-    "mysql": "^2.18.1"
+    "mysql": "^2.18.1",
+    "mysql2": "^3.16.0",
+    "xlsx": "^0.18.5"
   }
 }
